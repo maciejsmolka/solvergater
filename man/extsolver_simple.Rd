@@ -21,7 +21,7 @@ and really executable)}
 \value{
 An object of classes \code{extsolver_simple} and \code{extsolver} with components
 \itemize{
-\item \code{cmd} path-normalized command to run solver executable
+\item \code{cmd} command to run solver executable
 \item \code{value_file} path to file containing objective value
 \item \code{gradient_file} path to file containing objective gradient
 }
@@ -31,8 +31,8 @@ Gateway to simple external solver that stores objective value and gradient
 in separate files with simple format (real numbers separated with whitespaces).
 }
 \examples{
-rscript_path <- file.path(R.home(), "/bin/Rscript")
-solver_path <- file.path(find.package("solvergater"), "exec/fake_simple.R")
+rscript_path <- file.path(R.home(), "bin", "Rscript")
+solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
 s <- extsolver_simple(paste(rscript_path, solver_path))
 old_wd <- getwd()
 setwd(tempdir())

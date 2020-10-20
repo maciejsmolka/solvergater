@@ -9,15 +9,15 @@
 #' @param gradient_file file containing the computed objective gradient
 #'
 #' @return An object of classes `extsolver_simple` and `extsolver` with components
-#' * `cmd` path-normalized command to run solver executable
+#' * `cmd` command to run solver executable
 #' * `value_file` path to file containing objective value
 #' * `gradient_file` path to file containing objective gradient
 #'
 #' @export
 #'
 #' @examples
-#' rscript_path <- file.path(R.home(), "/bin/Rscript")
-#' solver_path <- file.path(find.package("solvergater"), "exec/fake_simple.R")
+#' rscript_path <- file.path(R.home(), "bin", "Rscript")
+#' solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
 #' s <- extsolver_simple(paste(rscript_path, solver_path))
 #' old_wd <- getwd()
 #' setwd(tempdir())

@@ -1,8 +1,8 @@
 test_that("running external solver works", {
   x <- c(1.2, 3.5, 10.6, 0.1, -2.3)
   precision <- 10
-  rscript_path <- file.path(R.home(), "/bin/Rscript")
-  solver_path <- file.path(find.package("solvergater"), "exec/fake_simple.R")
+  rscript_path <- file.path(R.home(), "bin", "Rscript")
+  solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
   s <- extsolver_simple(paste(rscript_path, solver_path))
   old_wd <- getwd()
   setwd(tempdir())
