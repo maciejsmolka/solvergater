@@ -11,8 +11,7 @@ extsolver_simple(
 )
 }
 \arguments{
-\item{cmd}{command to run the solver executable (must point to something existing
-and really executable)}
+\item{cmd}{command to run the solver executable}
 
 \item{value_file}{file containing the computed objective value}
 
