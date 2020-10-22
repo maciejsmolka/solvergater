@@ -32,7 +32,8 @@ in separate files with simple format (real numbers separated with whitespaces).
 \examples{
 rscript_path <- file.path(R.home(), "bin", "Rscript")
 solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
-s <- extsolver_simple(paste(rscript_path, solver_path))
+solver_cmd <- paste(rscript_path, solver_path)
+s <- extsolver_simple(solver_cmd)
 old_wd <- getwd()
 setwd(tempdir())
 compute_objective(s, c(20, 5), 10)

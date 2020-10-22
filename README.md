@@ -11,7 +11,7 @@ It is a common task to solve an optimization problem when the objective
 is computed using an external application, e.g. an adaptive
 finite-element PDE solver, that gets its input from the command line and
 writes its output to a number of files. The `solvergater` package
-provides a simple gateway to such external apps.
+provides a simple R gateway to such external apps.
 
 ## Installation
 

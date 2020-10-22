@@ -1,6 +1,6 @@
 Package: solvergater
 Title: External Solver Gateway in R
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: 
     person(given = "Maciej",
            family = "Smołka",
@@ -10,7 +10,7 @@ Authors@R:
 Description: It is a common task to solve an optimization problem when the objective
     is computed using an external application, e.g. an adaptive finite-element PDE 
     solver, that gets its input from the command line and writes its output to a 
-    number of files. The package provides a simple gateway to such external apps.
+    number of files. The package provides a simple R gateway to such external apps.
 License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: true

@@ -17,7 +17,8 @@
 #' @examples
 #' rscript_path <- file.path(R.home(), "bin", "Rscript")
 #' solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
-#' s <- extsolver_simple(paste(rscript_path, solver_path))
+#' solver_cmd <- paste(rscript_path, solver_path)
+#' s <- extsolver_simple(solver_cmd)
 #' old_wd <- getwd()
 #' setwd(tempdir())
 #' compute_objective(s, c(20, 5), 10)
@@ -35,14 +36,25 @@ extsolver_simple <- function(cmd, value_file = "output_value",
 }
 
 #' @describeIn compute_objective Runs solver executable and reads values from output
-#' file(s).
+#' file(s). If solver process exits with non-zero status code, a warning is issued
+#' and list of `NA`'s is returned. In `...` one can pass `ignore.stdout` and
+#' `ignore.stderr` that are in turn passed to [base::system()].
 #' @export
-compute_objective.extsolver_simple <- function(solver, x, precision) {
+compute_objective.extsolver_simple <- function(solver, x, precision, ...) {
   cmd <- paste(solver$cmd, paste(x, collapse = " "), precision)
+  args <- list(...)
+  if (is.null(args$ignore.stdout)) {
+    args$ignore.stdout <- FALSE
+  }
+  if (is.null(args$ignore.stderr)) {
+    args$ignore.stderr <- FALSE
+  }
   message("Solver command: ", cmd)
-  status <- system(cmd)
+  status <- system(cmd, ignore.stdout = args$ignore.stdout,
+                   ignore.stderr = args$ignore.stderr)
   if (status != 0) {
-    stop("Solver exited with status ", status, call. = FALSE)
+    warning("Solver exited with status ", status, call. = FALSE)
+    return(list(value = NA, gradient = NA))
   } else {
     message("Solver exited normally")
   }

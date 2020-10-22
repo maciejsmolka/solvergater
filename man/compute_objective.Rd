@@ -7,11 +7,11 @@
 \alias{compute_objective.extsolver_simple}
 \title{Compute the objective}
 \usage{
-compute_objective(solver, x, precision)
+compute_objective(solver, x, precision, ...)
 
-\method{compute_objective}{extsolver_none}(solver, x, precision = NULL)
+\method{compute_objective}{extsolver_none}(solver, x, precision = NULL, ...)
 
-\method{compute_objective}{extsolver_simple}(solver, x, precision)
+\method{compute_objective}{extsolver_simple}(solver, x, precision, ...)
 }
 \arguments{
 \item{solver}{solver object}
@@ -19,6 +19,8 @@ compute_objective(solver, x, precision)
 \item{x}{numeric vector representing the point to compute objective at}
 
 \item{precision}{length 1 numeric vector indicating desired solver accuracy (solver-dependent)}
+
+\item{...}{additional arguments passed to other functions}
 }
 \value{
 List with components:
@@ -38,7 +40,9 @@ solver.
 \code{precision}.
 
 \item \code{extsolver_simple}: Runs solver executable and reads values from output
-file(s).
+file(s). If solver process exits with non-zero status code, a warning is issued
+and list of \code{NA}'s is returned. In \code{...} one can pass \code{ignore.stdout} and
+\code{ignore.stderr} that are in turn passed to \code{\link[base:system]{base::system()}}.
 }}
 
 \examples{

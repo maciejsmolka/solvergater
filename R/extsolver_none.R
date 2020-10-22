@@ -35,7 +35,7 @@ extsolver_none <- function(objective = function(x) 0,
 #' @describeIn compute_objective Computes output using provided functions, ignores
 #' `precision`.
 #' @export
-compute_objective.extsolver_none <- function(solver, x, precision = NULL) {
+compute_objective.extsolver_none <- function(solver, x, precision = NULL, ...) {
   grad <- if (is.null(solver$gradient)) NA else solver$gradient(x)
   list(value = solver$objective(x), gradient = grad)
 }
