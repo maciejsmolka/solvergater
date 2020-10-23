@@ -36,6 +36,7 @@ extsolver_none <- function(objective = function(x) 0,
 #' `precision`.
 #' @export
 compute_objective.extsolver_none <- function(solver, x, precision = NULL, ...) {
+  assert_point_not_null(x)
   grad <- if (provides_gradient(solver)) solver$gradient(x) else NA
   list(value = solver$objective(x), gradient = grad)
 }

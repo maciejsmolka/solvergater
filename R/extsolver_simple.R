@@ -55,6 +55,8 @@ extsolver_simple <- function(
 #' `ignore.stderr` that are in turn passed to [base::system()].
 #' @export
 compute_objective.extsolver_simple <- function(solver, x, precision, ...) {
+  assert_point_not_null(x)
+  assert_precision_not_null(precision)
   cmd <- paste(solver$cmd, paste(x, collapse = " "), precision)
   args <- list(...)
   if (is.null(args$ignore.stdout)) {
