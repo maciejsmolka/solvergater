@@ -21,7 +21,7 @@
 extsolver_none <- function(objective = function(x) 0,
                            gradient = function(x) rep(0, length(x))) {
   if (is.null(objective)) {
-    stop("Objective function must be provided")
+    stop("Objective function must be provided", call. = FALSE)
   }
   structure(
     list(
@@ -36,6 +36,12 @@ extsolver_none <- function(objective = function(x) 0,
 #' `precision`.
 #' @export
 compute_objective.extsolver_none <- function(solver, x, precision = NULL, ...) {
-  grad <- if (is.null(solver$gradient)) NA else solver$gradient(x)
+  grad <- if (provides_gradient(solver)) solver$gradient(x) else NA
   list(value = solver$objective(x), gradient = grad)
+}
+
+#' @describeIn provides_gradient `TRUE` if gradient function has been provided
+#' @export
+provides_gradient.extsolver_none <- function(solver) {
+  !is.null(solver$gradient)
 }
