@@ -34,8 +34,8 @@ An object of classes \code{shell_solver} and \code{solver}
 }
 \description{
 Gateway to simple external solver that is run from the command line
-and stores objective value and gradient
-in separate files with simple format (real numbers separated with whitespaces).
+and stores objective value(s) and gradient (or jacobian)
+in output text files.
 }
 \examples{
 rscript_path <- file.path(R.home(), "bin", "Rscript")

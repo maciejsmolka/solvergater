@@ -1,8 +1,8 @@
 #' Gateway to solver run from command line
 #'
 #' Gateway to simple external solver that is run from the command line
-#' and stores objective value and gradient
-#' in separate files with simple format (real numbers separated with whitespaces).
+#' and stores objective value(s) and gradient (or jacobian)
+#' in output text files.
 #'
 #' @param cmd command to run the solver executable
 #' @param value_file name of file containing the computed objective value, cannot
