@@ -2,7 +2,7 @@
 % Please edit documentation in R/shell_solver.R
 \name{shell_solver}
 \alias{shell_solver}
-\title{Simple external solver gateway}
+\title{Gateway to solver run from command line}
 \usage{
 shell_solver(
   cmd,
@@ -33,7 +33,8 @@ point and precision for solver command line}
 An object of classes \code{shell_solver} and \code{solver}
 }
 \description{
-Gateway to simple external solver that stores objective value and gradient
+Gateway to simple external solver that is run from the command line
+and stores objective value and gradient
 in separate files with simple format (real numbers separated with whitespaces).
 }
 \examples{

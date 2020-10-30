@@ -1,6 +1,7 @@
-#' Simple external solver gateway
+#' Gateway to solver run from command line
 #'
-#' Gateway to simple external solver that stores objective value and gradient
+#' Gateway to simple external solver that is run from the command line
+#' and stores objective value and gradient
 #' in separate files with simple format (real numbers separated with whitespaces).
 #'
 #' @param cmd command to run the solver executable
