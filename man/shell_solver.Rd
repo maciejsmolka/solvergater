@@ -10,7 +10,10 @@ shell_solver(
   gradient_file = NULL,
   value_read_fn = function(file) scan(file, quiet = TRUE),
   gradient_read_fn = if (!is.null(gradient_file)) value_read_fn,
-  arg_combine_fn = function(x, precision) paste(c(x, precision), collapse = " ")
+  arg_combine_fn = function(x, precision) paste(c(x, precision), collapse = " "),
+  ignore.stdout = TRUE,
+  ignore.stderr = TRUE,
+  nparams = NULL
 )
 }
 \arguments{
@@ -28,6 +31,12 @@ be \code{NULL}}
 
 \item{arg_combine_fn}{function producing appropriate length-1 character vector from
 point and precision for solver command line}
+
+\item{ignore.stdout}{logical, should solver STDOUT be ignored?}
+
+\item{ignore.stderr}{logical, should solver STDERR be ignored?}
+
+\item{nparams}{numeric, number of parameters, unspecified if \code{NULL}}
 }
 \value{
 An object of classes \code{shell_solver} and \code{solver}

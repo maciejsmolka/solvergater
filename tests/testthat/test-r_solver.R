@@ -19,3 +19,8 @@ test_that("r_solver with square function works", {
   expect_equal(square_objective(x), y$value)
   expect_equal(square_gradient(x), y$gradient)
 })
+
+test_that("Setting number of params works for r_solver", {
+  solver <- r_solver(nparams = 10)
+  expect_error(compute_objective(solver, c(1, 2), 2))
+})

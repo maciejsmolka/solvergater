@@ -13,6 +13,9 @@
 #' @param gradient_read_fn function reading the objective gradient from file
 #' @param arg_combine_fn function producing appropriate length-1 character vector from
 #' point and precision for solver command line
+#' @param ignore.stdout logical, should solver STDOUT be ignored?
+#' @param ignore.stderr logical, should solver STDERR be ignored?
+#' @param nparams numeric, number of parameters, unspecified if `NULL`
 #'
 #' @return An object of classes `shell_solver` and `solver`
 #'
@@ -33,46 +36,61 @@ shell_solver <- function(
   gradient_file = NULL,
   value_read_fn = function(file) scan(file, quiet = TRUE),
   gradient_read_fn = if (!is.null(gradient_file)) value_read_fn,
-  arg_combine_fn = function(x, precision) paste(c(x, precision), collapse = " ")
+  arg_combine_fn = function(x, precision) paste(c(x, precision), collapse = " "),
+  ignore.stdout = TRUE,
+  ignore.stderr = TRUE,
+  nparams = NULL
   ) {
-  if (is.null(cmd)) {
+  validate_shell_solver(
+    new_shell_solver(
+      list(
+        cmd = cmd,
+        value_file = value_file,
+        gradient_file = gradient_file,
+        read_value = value_read_fn,
+        read_gradient = gradient_read_fn,
+        combine_args = arg_combine_fn,
+        ignore.stdout = ignore.stdout,
+        ignore.stderr = ignore.stderr
+        ),
+      nparams = nparams
+    )
+  )
+}
+
+new_shell_solver <- function(x, nparams) {
+  new_solver(x, nparams = nparams, class = "shell_solver")
+}
+
+validate_shell_solver <- function(x) {
+  nparams <- attr(x, "nparams")
+  if (is.null(x$cmd)) {
     stop("Command to run solver must be provided", call. = FALSE)
   }
-  if (is.null(value_file)) {
+  if (is.null(x$value_file)) {
     stop("Value file name must be provided", call. = FALSE)
   }
-  structure(
-    list(
-      cmd = cmd,
-      value_file = value_file,
-      gradient_file = gradient_file,
-      read_value = value_read_fn,
-      read_gradient = gradient_read_fn,
-      combine_args = arg_combine_fn
-    ),
-    class = c("shell_solver", "solver")
-  )
+  if (!is.null(nparams)) {
+    if (!all(!is.na(nparams) & nparams > 0)) {
+      stop("Number of parameters must be NULL or positive numeric", call. = FALSE)
+    }
+  }
+  x
 }
 
 #' @describeIn compute_objective Runs solver executable and reads values from output
 #' file(s). If solver process exits with non-zero status code, a warning is issued
-#' and list of `NA`'s is returned. In `...` one can pass `ignore.stdout` and
-#' `ignore.stderr` that are in turn passed to [base::system()].
+#' and list of `NA`'s is returned.
+#'
 #' @export
 compute_objective.shell_solver <- function(solver, x, precision, ...) {
   assert_point_not_null(x)
   assert_precision_not_null(precision)
+  NextMethod("compute_objective")
   cmd <- paste(solver$cmd, solver$combine_args(x, precision))
-  args <- list(...)
-  if (is.null(args$ignore.stdout)) {
-    args$ignore.stdout <- FALSE
-  }
-  if (is.null(args$ignore.stderr)) {
-    args$ignore.stderr <- FALSE
-  }
   message("Solver command: ", cmd)
-  status <- system(cmd, ignore.stdout = args$ignore.stdout,
-                   ignore.stderr = args$ignore.stderr)
+  status <- system(cmd, ignore.stdout = solver$ignore.stdout,
+                   ignore.stderr = solver$ignore.stderr)
   if (status != 0) {
     warning("Solver exited with status ", status, call. = FALSE)
     return(list(value = NA, gradient = NA))

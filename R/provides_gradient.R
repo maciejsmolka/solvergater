@@ -15,5 +15,5 @@ provides_gradient <- function(solver) {
 
 #' @export
 provides_gradient.solver <- function(solver) {
-  NA
+  FALSE
 }

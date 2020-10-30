@@ -4,7 +4,11 @@
 \alias{r_solver}
 \title{Gateway for solver written in R}
 \usage{
-r_solver(objective = function(x) 0, gradient = function(x) rep(0, length(x)))
+r_solver(
+  objective = function(x) 0,
+  gradient = function(x) rep(0, length(x)),
+  nparams = NULL
+)
 }
 \arguments{
 \item{objective}{function to act as the objective (should return length-one vector)}
@@ -12,13 +16,11 @@ r_solver(objective = function(x) 0, gradient = function(x) rep(0, length(x)))
 \item{gradient}{function to act as the objective gradient (should return vector
 of the same lentgh as its parameter and should be the real gradient function
 for \code{objective})}
+
+\item{nparams}{numeric, number of parameters, unspecified if \code{NULL}}
 }
 \value{
-An object of classes \code{r_solver} and \code{solver} with two components
-\itemize{
-\item \code{objective} the objective function itself
-\item \code{gradient} the objective gradient function
-}
+An object of classes \code{r_solver} and \code{solver}
 }
 \description{
 (Mock) gateway to solver that does not perform any external calls

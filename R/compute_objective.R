@@ -24,7 +24,7 @@ compute_objective <- function(solver, x, precision, ...) {
 
 #' @export
 compute_objective.default <- function(solver = NULL, x = NULL, precision = NULL, ...) {
-  return(list(value = NA, gradient = NA))
+  list(value = NA, gradient = NA)
 }
 
 #' Assert that point is not `NULL`
