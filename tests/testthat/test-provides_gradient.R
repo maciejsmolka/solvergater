@@ -9,10 +9,10 @@ test_that("extsolver_none provides gradient if appropriate", {
  expect_true(!provides_gradient(s_nograd))
 })
 
-test_that("extsolver_simple provides gradient if appropriate", {
-  s_grad <-  extsolver_simple("command", value_file = "vf",
+test_that("shell_solver provides gradient if appropriate", {
+  s_grad <-  shell_solver("command", value_file = "vf",
                               gradient_file = "grad_file")
   expect_true(provides_gradient(s_grad))
-  s_nograd <- extsolver_simple("command", value_file = "vf")
+  s_nograd <- shell_solver("command", value_file = "vf")
   expect_true(!provides_gradient(s_nograd))
 })

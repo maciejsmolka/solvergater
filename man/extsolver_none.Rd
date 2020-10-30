@@ -17,7 +17,7 @@ of the same lentgh as its parameter and should be the real gradient function
 for \code{objective})}
 }
 \value{
-An object of classes \code{extsolver_none} and \code{extsolver} with two components
+An object of classes \code{extsolver_none} and \code{solver} with two components
 \itemize{
 \item \code{objective} the objective function itself
 \item \code{gradient} the objective gradient function

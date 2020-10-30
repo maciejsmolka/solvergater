@@ -12,7 +12,7 @@ write_matrix(mat, file)
 \item{file}{file to write to}
 }
 \description{
-For a matrix with N columns, \code{write_matrix()} and \link{read_matrix(N)} are thought as
+For a matrix with N columns, \code{write_matrix()} and \code{read_matrix(N)} are thought as
 mutual inverse.
 }
 \examples{
@@ -21,4 +21,7 @@ tf <- tempfile()
 write_matrix(m, tf)
 rm3 <- read_matrix(3)
 rm3(tf)
+}
+\seealso{
+\code{\link[=read_matrix]{read_matrix()}}
 }

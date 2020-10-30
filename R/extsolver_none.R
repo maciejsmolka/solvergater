@@ -9,7 +9,7 @@
 #' of the same lentgh as its parameter and should be the real gradient function
 #' for `objective`)
 #'
-#' @return An object of classes `extsolver_none` and `extsolver` with two components
+#' @return An object of classes `extsolver_none` and `solver` with two components
 #' * `objective` the objective function itself
 #' * `gradient` the objective gradient function
 #'
@@ -28,7 +28,7 @@ extsolver_none <- function(objective = function(x) 0,
       objective = objective,
       gradient = gradient
     ),
-    class = c("extsolver_none", "extsolver")
+    class = c("extsolver_none", "solver")
   )
 }
 

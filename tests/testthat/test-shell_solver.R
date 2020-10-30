@@ -4,7 +4,7 @@ test_that("running external solver works", {
   rscript_path <- file.path(R.home(), "bin", "Rscript")
   solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
   solver_cmd <- paste(rscript_path, solver_path)
-  s <- extsolver_simple(solver_cmd, value_file = "output_value",
+  s <- shell_solver(solver_cmd, value_file = "output_value",
                         gradient_file = "output_gradient")
   old_wd <- getwd()
   setwd(tempdir())
@@ -22,7 +22,7 @@ test_that("compute_objective handles solver error", {
   rscript_path <- file.path(R.home(), "bin", "Rscript")
   solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
   solver_cmd <- paste(rscript_path, solver_path)
-  s <- extsolver_simple(solver_cmd, value_file = "output_value",
+  s <- shell_solver(solver_cmd, value_file = "output_value",
                         gradient_file = "output_gradient")
   expect_warning(obj <- compute_objective(s, err_x, precision, ignore.stderr = TRUE))
   expect_true(is.na(obj$value))

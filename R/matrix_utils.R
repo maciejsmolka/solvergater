@@ -23,8 +23,10 @@ read_matrix <- function(ncol) {
 
 #' Write a matrix to a file
 #'
-#' For a matrix with N columns, `write_matrix()` and [read_matrix(N)] are thought as
+#' For a matrix with N columns, `write_matrix()` and `read_matrix(N)` are thought as
 #' mutual inverse.
+#'
+#' @seealso [read_matrix()]
 #'
 #' @param mat matrix to be written
 #' @param file file to write to

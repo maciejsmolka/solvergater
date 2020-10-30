@@ -14,6 +14,6 @@ provides_gradient <- function(solver) {
 }
 
 #' @export
-provides_gradient.extsolver <- function(solver) {
+provides_gradient.solver <- function(solver) {
   NA
 }

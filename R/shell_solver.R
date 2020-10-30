@@ -13,7 +13,7 @@
 #' @param arg_combine_fn function producing appropriate length-1 character vector from
 #' point and precision for solver command line
 #'
-#' @return An object of classes `extsolver_simple` and `extsolver`
+#' @return An object of classes `shell_solver` and `solver`
 #'
 #' @export
 #'
@@ -21,12 +21,12 @@
 #' rscript_path <- file.path(R.home(), "bin", "Rscript")
 #' solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
 #' solver_cmd <- paste(rscript_path, solver_path)
-#' s <- extsolver_simple(solver_cmd, value_file = "output_value", gradient_file = "output_gradient")
+#' s <- shell_solver(solver_cmd, value_file = "output_value", gradient_file = "output_gradient")
 #' old_wd <- getwd()
 #' setwd(tempdir())
 #' compute_objective(s, c(20, 5), 10)
 #' setwd(old_wd)
-extsolver_simple <- function(
+shell_solver <- function(
   cmd,
   value_file,
   gradient_file = NULL,
@@ -49,7 +49,7 @@ extsolver_simple <- function(
       read_gradient = gradient_read_fn,
       combine_args = arg_combine_fn
     ),
-    class = c("extsolver_simple", "extsolver")
+    class = c("shell_solver", "solver")
   )
 }
 
@@ -58,7 +58,7 @@ extsolver_simple <- function(
 #' and list of `NA`'s is returned. In `...` one can pass `ignore.stdout` and
 #' `ignore.stderr` that are in turn passed to [base::system()].
 #' @export
-compute_objective.extsolver_simple <- function(solver, x, precision, ...) {
+compute_objective.shell_solver <- function(solver, x, precision, ...) {
   assert_point_not_null(x)
   assert_precision_not_null(precision)
   cmd <- paste(solver$cmd, solver$combine_args(x, precision))
@@ -85,7 +85,7 @@ compute_objective.extsolver_simple <- function(solver, x, precision, ...) {
 
 #' @describeIn provides_gradient `TRUE` if gradient file has been provided
 #' @export
-provides_gradient.extsolver_simple <- function(solver) {
+provides_gradient.shell_solver <- function(solver) {
   !is.null(solver$gradient_file)
 }
 
