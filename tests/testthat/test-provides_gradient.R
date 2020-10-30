@@ -2,10 +2,10 @@ test_that("bad solver knows nothing about gradient", {
   expect_error(provides_gradient(NULL))
 })
 
-test_that("extsolver_none provides gradient if appropriate", {
- s_grad <-  extsolver_none()
+test_that("r_solver provides gradient if appropriate", {
+ s_grad <-  r_solver()
  expect_true(provides_gradient(s_grad))
- s_nograd <- extsolver_none(gradient = NULL)
+ s_nograd <- r_solver(gradient = NULL)
  expect_true(!provides_gradient(s_nograd))
 })
 
