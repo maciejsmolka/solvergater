@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![Travis build
+status](https://travis-ci.org/maciejsmolka/solvergater.svg?branch=master)](https://travis-ci.org/maciejsmolka/solvergater)
 <!-- badges: end -->
 
 It is a common task to solve an optimization problem when the objective
@@ -48,11 +50,11 @@ useful.
 
 ``` r
 library(solvergater)
-solver <- extsolver_none(objective = function(x) sum(x^2), 
+solver <- r_solver(objective = function(x) sum(x^2), 
                          gradient = function(x) 2 * x)
 # A more realistic code would be:
-# solver <- extsolver_simple("/a/path/to/solver/exec")
-obj <- compute_objective(solver, c(1.2, 3.4, 0.2), precision = 2.3)
+# solver <- shell_solver("/a/path/to/solver/exec")
+obj <- run(solver, c(1.2, 3.4, 0.2), precision = 2.3)
 obj$value
 #> [1] 13.04
 obj$gradient
