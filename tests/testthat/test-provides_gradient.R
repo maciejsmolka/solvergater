@@ -1,5 +1,5 @@
 test_that("bad solver knows nothing about gradient", {
-  expect_error(provides_gradient(NULL))
+  expect_null(provides_gradient(NULL))
 })
 
 test_that("r_solver provides gradient if appropriate", {

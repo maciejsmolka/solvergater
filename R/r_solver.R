@@ -25,13 +25,15 @@ r_solver <- function(
   validate_r_solver(
     new_r_solver(
       list(objective = objective, gradient = gradient),
-      nparams = nparams
+      nparams = nparams,
+      provides_gradient = is.function(gradient)
     )
   )
 }
 
-new_r_solver <- function(x, nparams) {
-  new_solver(x, nparams, class = "r_solver")
+new_r_solver <- function(x, nparams, provides_gradient) {
+  new_solver(x, nparams = nparams, provides_gradient = provides_gradient,
+             class = "r_solver")
 }
 
 validate_r_solver <- function(x) {
@@ -39,10 +41,4 @@ validate_r_solver <- function(x) {
     stop("Objective function must be provided", call. = FALSE)
   }
   x
-}
-
-#' @describeIn provides_gradient `TRUE` if gradient function has been provided
-#' @export
-provides_gradient.r_solver <- function(solver) {
-  !is.null(solver$gradient)
 }

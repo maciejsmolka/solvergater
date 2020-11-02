@@ -1,11 +1,13 @@
 # solver class constructor
 # solver is an abstract class
-new_solver <- function(x, nparams = NULL, ..., class = character()) {
+new_solver <- function(x, nparams = NULL, provides_gradient = FALSE, ...,
+                       class = character()) {
   stopifnot(is.list(x))
   stopifnot(is.numeric(nparams) | is.null(nparams))
   structure(
     x,
     nparams = nparams,
+    provides_gradient = provides_gradient,
     ...,
     class = c(class, "solver")
   )
@@ -31,3 +33,17 @@ nparams <- function(solver) {
   'attr<-'(solver, "nparams", value)
 }
 
+#' Does this solver provide derivative info?
+#'
+#' @param solver object of class `solver`
+#'
+#' @return logical, TRUE if the solver computes the objective gradient
+#'
+#' @export
+#'
+#' @examples
+#' s <- r_solver()
+#' provides_gradient(s)
+provides_gradient <- function(solver) {
+  attr(solver, "provides_gradient")
+}

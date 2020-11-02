@@ -53,13 +53,15 @@ shell_solver <- function(
         ignore.stdout = ignore.stdout,
         ignore.stderr = ignore.stderr
         ),
-      nparams = nparams
+      nparams = nparams,
+      provides_gradient = !is.null(gradient_file)
     )
   )
 }
 
-new_shell_solver <- function(x, nparams) {
-  new_solver(x, nparams = nparams, class = "shell_solver")
+new_shell_solver <- function(x, nparams, provides_gradient) {
+  new_solver(x, nparams = nparams, provides_gradient = provides_gradient,
+             class = "shell_solver")
 }
 
 validate_shell_solver <- function(x) {
@@ -76,12 +78,6 @@ validate_shell_solver <- function(x) {
     }
   }
   x
-}
-
-#' @describeIn provides_gradient `TRUE` if gradient file has been provided
-#' @export
-provides_gradient.shell_solver <- function(solver) {
-  !is.null(solver$gradient_file)
 }
 
 read_value <- function(solver) {
