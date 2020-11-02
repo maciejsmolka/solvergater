@@ -53,6 +53,6 @@ solver_cmd <- paste(rscript_path, solver_path)
 s <- shell_solver(solver_cmd, value_file = "output_value", gradient_file = "output_gradient")
 old_wd <- getwd()
 setwd(tempdir())
-compute_objective(s, c(20, 5), 10)
+run(s, c(20, 5), 10)
 setwd(old_wd)
 }

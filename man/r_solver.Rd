@@ -29,5 +29,5 @@ Provided mainly for testing purposes.
 }
 \examples{
 s <- r_solver(objective = function(x) sum(x^2), gradient = function(x) 2 * x)
-compute_objective(s, c(10, 1.5))
+run(s, c(10, 1.5))
 }

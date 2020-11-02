@@ -12,7 +12,7 @@ test_that("running external solver works", {
     )
   old_wd <- getwd()
   setwd(tempdir())
-  obj <- compute_objective(s, x, precision)
+  obj <- run(s, x, precision)
   expect_true(file.exists(s$value_file))
   expect_true(file.exists(s$gradient_file))
   setwd(old_wd)
@@ -32,12 +32,12 @@ test_that("compute_objective handles solver error", {
     gradient_file = "output_gradient",
     ignore.stderr = TRUE
     )
-  expect_warning(obj <- compute_objective(s, err_x, precision))
+  expect_warning(obj <- run(s, err_x, precision))
   expect_true(is.na(obj$value))
   expect_true(is.na(obj$gradient))
 })
 
 test_that("Setting number of params works for shell_solver", {
   solver <- shell_solver("", "", nparams = 10)
-  expect_error(compute_objective(solver, c(1, 2), 2))
+  expect_error(run(solver, c(1, 2), 2))
 })
