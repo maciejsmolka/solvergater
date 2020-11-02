@@ -31,15 +31,3 @@ nparams <- function(solver) {
   'attr<-'(solver, "nparams", value)
 }
 
-#' @describeIn compute_objective Checks if number of solver parameters (when not
-#' `NULL` equals length of given point and delegates to default method).
-#'
-#' @export
-compute_objective.solver <- function(solver, x, precision, ...) {
-  npars <- nparams(solver)
-  if (!is.null(npars) && length(x) != npars) {
-    stop("Dimension of 'x' must equal number of parameters in 'solver'",
-         call. = FALSE)
-  }
-  NextMethod("compute_objective")
-}

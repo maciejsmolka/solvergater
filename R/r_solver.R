@@ -41,16 +41,6 @@ validate_r_solver <- function(x) {
   x
 }
 
-#' @describeIn compute_objective Computes output using provided functions, ignores
-#' `precision`.
-#' @export
-compute_objective.r_solver <- function(solver, x, precision = NULL, ...) {
-  assert_point_not_null(x)
-  NextMethod("compute_objective")
-  grad <- if (provides_gradient(solver)) solver$gradient(x) else NA
-  list(value = solver$objective(x), gradient = grad)
-}
-
 #' @describeIn provides_gradient `TRUE` if gradient function has been provided
 #' @export
 provides_gradient.r_solver <- function(solver) {

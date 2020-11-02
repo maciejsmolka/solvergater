@@ -78,30 +78,6 @@ validate_shell_solver <- function(x) {
   x
 }
 
-#' @describeIn compute_objective Runs solver executable and reads values from output
-#' file(s). If solver process exits with non-zero status code, a warning is issued
-#' and list of `NA`'s is returned.
-#'
-#' @export
-compute_objective.shell_solver <- function(solver, x, precision, ...) {
-  assert_point_not_null(x)
-  assert_precision_not_null(precision)
-  NextMethod("compute_objective")
-  cmd <- paste(solver$cmd, solver$combine_args(x, precision))
-  message("Solver command: ", cmd)
-  status <- system(cmd, ignore.stdout = solver$ignore.stdout,
-                   ignore.stderr = solver$ignore.stderr)
-  if (status != 0) {
-    warning("Solver exited with status ", status, call. = FALSE)
-    return(list(value = NA, gradient = NA))
-  } else {
-    message("Solver exited normally")
-  }
-  val <- read_value(solver)
-  grad <- read_gradient(solver)
-  list(value = val, gradient = grad)
-}
-
 #' @describeIn provides_gradient `TRUE` if gradient file has been provided
 #' @export
 provides_gradient.shell_solver <- function(solver) {
