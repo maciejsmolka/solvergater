@@ -50,8 +50,8 @@ devtools::install_github("maciejsmolka/solvergater")
 
 This is a basic example which shows you how to run an external solver to
 compute the objective value and (possibly) gradient. The example uses
-`extsolver_none` which in fact does not perform any external calls. In actual
-computations solver classes like `extsolver_simple` are more useful.
+`r_solver` which in fact does not perform any external calls. In actual
+computations solver classes like `shell_solver` are more useful.
 
 ```{r example}
 library(solvergater)
