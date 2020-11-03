@@ -60,7 +60,7 @@ run.shell_solver <- function(solver, x, precision, ...) {
   NextMethod("run")
   cmd <- paste(solver$cmd, solver$combine_args(x, precision))
   message("Solver command: ", cmd)
-  status <- system(cmd, ignore.stdout = solver$ignore.stdout,
+  status <- run_in(cmd, solver$wd, ignore.stdout = solver$ignore.stdout,
                    ignore.stderr = solver$ignore.stderr)
   if (status != 0) {
     warning("Solver exited with status ", status, call. = FALSE)
@@ -72,4 +72,3 @@ run.shell_solver <- function(solver, x, precision, ...) {
   grad <- read_gradient(solver)
   list(value = val, gradient = grad)
 }
-

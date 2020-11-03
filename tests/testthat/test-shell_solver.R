@@ -8,19 +8,17 @@ test_that("running external solver works", {
     solver_cmd,
     value_file = "output_value",
     gradient_file = "output_gradient",
-    ignore.stderr = TRUE
+    ignore.stderr = TRUE,
+    wd = tempdir()
     )
-  old_wd <- getwd()
-  setwd(tempdir())
   obj <- run(s, x, precision)
-  expect_true(file.exists(s$value_file))
-  expect_true(file.exists(s$gradient_file))
-  setwd(old_wd)
+  expect_true(file.exists(output_file(s, "value")))
+  expect_true(file.exists(output_file(s, "gradient")))
   expect_length(obj$value, 1)
   expect_length(obj$gradient, length(x))
 })
 
-test_that("compute_objective handles solver error", {
+test_that("run() handles solver error", {
   err_x <- rep(1000, 10) # Value synchronized with fake_simple.R script
   precision <- 10
   rscript_path <- file.path(R.home(), "bin", "Rscript")
