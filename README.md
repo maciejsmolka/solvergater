@@ -7,6 +7,8 @@
 
 [![Travis build
 status](https://travis-ci.org/maciejsmolka/solvergater.svg?branch=master)](https://travis-ci.org/maciejsmolka/solvergater)
+[![R build
+status](https://github.com/maciejsmolka/solvergater/workflows/R-CMD-check/badge.svg)](https://github.com/maciejsmolka/solvergater/actions)
 <!-- badges: end -->
 
 It is a common task to solve an optimization problem when the objective
