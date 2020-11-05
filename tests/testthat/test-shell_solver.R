@@ -6,16 +6,16 @@ test_that("running external solver works", {
   solver_cmd <- paste(rscript_path, solver_path)
   s <- shell_solver(
     solver_cmd,
-    value_file = "output_value",
-    gradient_file = "output_gradient",
+    qoi_file = "output_qoi",
+    jacobian_file = "output_jacobian",
     ignore.stderr = TRUE,
     wd = tempdir()
     )
   obj <- run(s, x, precision)
-  expect_true(file.exists(output_file(s, "value")))
-  expect_true(file.exists(output_file(s, "gradient")))
-  expect_length(obj$value, 1)
-  expect_length(obj$gradient, length(x))
+  expect_true(file.exists(output_file(s, "qoi")))
+  expect_true(file.exists(output_file(s, "jacobian")))
+  expect_length(obj$qoi, 1)
+  expect_length(obj$jacobian, length(x))
 })
 
 test_that("run() handles solver error", {
@@ -26,13 +26,13 @@ test_that("run() handles solver error", {
   solver_cmd <- paste(rscript_path, solver_path)
   s <- shell_solver(
     solver_cmd,
-    value_file = "output_value",
-    gradient_file = "output_gradient",
+    qoi_file = "output_qoi",
+    jacobian_file = "output_jacobian",
     ignore.stderr = TRUE
     )
   expect_warning(obj <- run(s, err_x, precision))
-  expect_true(is.na(obj$value))
-  expect_true(is.na(obj$gradient))
+  expect_true(is.na(obj$qoi))
+  expect_true(is.na(obj$jacobian))
 })
 
 test_that("Setting number of params works for shell_solver", {

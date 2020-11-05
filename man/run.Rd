@@ -7,11 +7,11 @@
 \alias{run.shell_solver}
 \title{Run the solver}
 \usage{
-run(solver, x, precision, ...)
+run(solver, x, ...)
 
-\method{run}{solver}(solver, x, precision, ...)
+\method{run}{solver}(solver, x, ...)
 
-\method{run}{r_solver}(solver, x, precision = NULL, ...)
+\method{run}{r_solver}(solver, x, ...)
 
 \method{run}{shell_solver}(solver, x, precision, ...)
 }
@@ -20,28 +20,28 @@ run(solver, x, precision, ...)
 
 \item{x}{numeric vector representing the point to compute objective at}
 
-\item{precision}{length 1 numeric vector indicating desired solver accuracy (solver-dependent)}
-
 \item{...}{additional arguments passed to other functions}
+
+\item{precision}{positive numeric scalar, expected solver accuracy (if applicable)}
 }
 \value{
 List with components:
 \itemize{
-\item \code{value} objective value at \code{x}, default implementation returns \code{NA};
-\item \code{gradient} gradient of the objective at \code{x}, default implementation returns \code{NA},
-\code{NA} is also returned if the solver does not provide gradient info.
+\item \code{qoi} quantity of interest (QOI) at \code{x}, default implementation returns \code{NA};
+\item \code{jacobian} QOI Jacobian matrix at \code{x}, default implementation returns \code{NA},
+\code{NA} is also returned if the solver does not provide Jacobian info.
 }
 }
 \description{
-Runs the solver executable and extracts the objective value and gradient.
+Runs the solver executable and extracts the quantity of interest and its
+Jacobian matrix (if available).
 }
 \section{Methods (by class)}{
 \itemize{
 \item \code{solver}: Checks if number of solver parameters (when not
 \code{NULL} equals length of given point) and delegates to default method.
 
-\item \code{r_solver}: Computes output using provided functions, ignores
-\code{precision}.
+\item \code{r_solver}: Computes output using provided functions.
 
 \item \code{shell_solver}: Runs solver executable and reads values from output
 file(s). If solver process exits with non-zero status code, a warning is issued

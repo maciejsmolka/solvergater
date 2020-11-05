@@ -4,7 +4,7 @@
 \alias{output_file}
 \title{Get solver output file name}
 \usage{
-output_file(solver, type = c("value", "gradient"))
+output_file(solver, type = c("qoi", "jacobian"))
 }
 \arguments{
 \item{solver}{object of class \code{shell_solver}}

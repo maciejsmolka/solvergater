@@ -2,12 +2,12 @@
 % Please edit documentation in R/solver.R
 \name{solver_attributes}
 \alias{solver_attributes}
-\alias{provides_gradient}
+\alias{provides_jacobian}
 \alias{nparams}
 \alias{nparams<-}
 \title{Solver attribute accessors}
 \usage{
-provides_gradient(solver)
+provides_jacobian(solver)
 
 nparams(solver)
 
@@ -23,6 +23,6 @@ Functions to get and set values of the most useful attributes of \code{solver} o
 }
 \examples{
 s <- r_solver(nparams = 10)
-provides_gradient(s)
+provides_jacobian(s)
 nparams(s)
 }
