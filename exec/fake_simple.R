@@ -7,20 +7,20 @@
 # the ball around point (1000, 1000, ..., 1000) (in any dimension) with radius
 # equal to the given precision. In this area the solver exits with error code -1.
 
-fake_simple <- function(value_file = "output_value",
-                        gradient_file = "output_gradient",
+fake_simple <- function(qoi_file = "output_qoi",
+                        jacobian_file = "output_jacobian",
                         cmd_args = commandArgs(TRUE)) {
   tryCatch({
-    message("Value file: ", value_file)
-    message("Gradient file: ", gradient_file)
+    message("QOI file: ", qoi_file)
+    message("Jacobian file: ", jacobian_file)
     input <- process_args(cmd_args)
     message("Point: ", toString(input$point))
     message("Precision: ", input$precision)
     y <- calculate_objective(input$point, input$precision)
-    message("Objective value: ", y$value)
-    message("Objective gradient: ", toString(y$gradient))
-    write(y$value, file = value_file)
-    write(y$gradient, file = gradient_file)
+    message("OQOI value: ", y$qoi)
+    message("QOI Jacobian: ", toString(y$jacobian))
+    write(y$qoi, file = qoi_file)
+    write(y$jacobian, file = jacobian_file)
   },
   error = function(e) {
     warning(conditionMessage(e), call. = FALSE)
@@ -60,7 +60,7 @@ calculate_objective <- function(x, precision) {
   if (is_faulty(x, precision)) {
     stop("Solver error", call. = FALSE)
   }
-  list(value = sum(x^2), gradient = 2 * x)
+  list(qoi = sum(x^2), jacobian = 2 * x)
 }
 
 FAULTY_COORD <- 1000

@@ -8,15 +8,15 @@
 #'
 #' @examples
 #' s <- r_solver(nparams = 10)
-#' provides_gradient(s)
+#' provides_jacobian(s)
 #' nparams(s)
 NULL
 
 #' @export
 #' @rdname solver_attributes
 #'
-provides_gradient <- function(solver) {
-  attr(solver, "provides_gradient")
+provides_jacobian <- function(solver) {
+  attr(solver, "provides_jacobian")
 }
 
 #' @export
@@ -35,14 +35,14 @@ nparams <- function(solver) {
 
 # solver class constructor
 # solver is an abstract class
-new_solver <- function(x, nparams = NULL, provides_gradient = FALSE, ...,
+new_solver <- function(x, nparams = NULL, provides_jacobian = FALSE, ...,
                        class = character()) {
   stopifnot(is.list(x))
   stopifnot(is.numeric(nparams) | is.null(nparams))
   structure(
     x,
     nparams = nparams,
-    provides_gradient = provides_gradient,
+    provides_jacobian = provides_jacobian,
     ...,
     class = c(class, "solver")
   )

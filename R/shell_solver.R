@@ -1,19 +1,20 @@
 #' Gateway to solver run from command line
 #'
 #' Gateway to simple external solver that is run from the command line
-#' and stores objective value(s) and gradient (or jacobian)
-#' in output text files.
+#' and stores quantity of interest and its jacobian (with respect to problem
+#' parameters in output text files.
 #'
-#' @param cmd command to run the solver executable
-#' @param value_file name of file containing the computed objective value, can
-#' be absolute or relative to `wd`, cannot be `NULL`
-#' @param gradient_file name of file containing the computed objective gradient,
+#' @param cmd command to run the solver executable.
+#' @param qoi_file name of file containing the computed quantity of interest, can
+#' be absolute or relative to `wd`, cannot be `NULL`.
+#' @param jacobian_file name of file containing the computed Jacobian matrix
+#' of quantity of interest,
 #' can be absolute or relative to `wd`, `NULL` indicates that the solver does not
-#' provide gradient info
-#' @param value_read_fn function reading the objective value from file
-#' @param gradient_read_fn function reading the objective gradient from file
-#' @param arg_combine_fn function producing appropriate length-1 character vector from
-#' point and precision for solver command line
+#' provide gradient info.
+#' @param qoi_read_fn function reading the quantity of interest from file.
+#' @param jacobian_read_fn function reading the Jacobian matrix from file.
+#' @param arg_combine_fn function producing appropriate length-1 character vector
+#' from point and precision for solver command line
 #' @param wd character, working directory, i.e. directory where actual solver exec
 #' has to be run, when `NULL` current working directory will be used
 #' @param ignore.stdout logical, should solver STDOUT be ignored?
@@ -28,15 +29,15 @@
 #' rscript_path <- file.path(R.home(), "bin", "Rscript")
 #' solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
 #' solver_cmd <- paste(rscript_path, solver_path)
-#' s <- shell_solver(solver_cmd, value_file = "output_value",
-#' gradient_file = "output_gradient", wd = tempdir())
+#' s <- shell_solver(solver_cmd, qoi_file = "output_qoi",
+#' jacobian_file = "output_jacobian", wd = tempdir())
 #' run(s, c(20, 5), 10)
 shell_solver <- function(
   cmd,
-  value_file,
-  gradient_file = NULL,
-  value_read_fn = function(file) scan(file, quiet = TRUE),
-  gradient_read_fn = if (!is.null(gradient_file)) value_read_fn,
+  qoi_file,
+  jacobian_file = NULL,
+  qoi_read_fn = function(file) scan(file, quiet = TRUE),
+  jacobian_read_fn = if (!is.null(jacobian_file)) qoi_read_fn,
   arg_combine_fn = function(x, precision) paste(c(x, precision), collapse = " "),
   wd = NULL,
   ignore.stdout = TRUE,
@@ -47,23 +48,23 @@ shell_solver <- function(
     new_shell_solver(
       list(
         cmd = cmd,
-        value_file = value_file,
-        gradient_file = gradient_file,
-        read_value = value_read_fn,
-        read_gradient = gradient_read_fn,
+        qoi_file = qoi_file,
+        jacobian_file = jacobian_file,
+        read_qoi = qoi_read_fn,
+        read_jacobian = jacobian_read_fn,
         combine_args = arg_combine_fn,
         wd = wd,
         ignore.stdout = ignore.stdout,
         ignore.stderr = ignore.stderr
         ),
       nparams = nparams,
-      provides_gradient = !is.null(gradient_file)
+      provides_jacobian = !is.null(jacobian_file)
     )
   )
 }
 
-new_shell_solver <- function(x, nparams, provides_gradient) {
-  new_solver(x, nparams = nparams, provides_gradient = provides_gradient,
+new_shell_solver <- function(x, nparams, provides_jacobian) {
+  new_solver(x, nparams = nparams, provides_jacobian = provides_jacobian,
              class = "shell_solver")
 }
 
@@ -72,8 +73,8 @@ validate_shell_solver <- function(x) {
   if (is.null(x$cmd)) {
     stop("Command to run solver must be provided", call. = FALSE)
   }
-  if (is.null(x$value_file)) {
-    stop("Value file name must be provided", call. = FALSE)
+  if (is.null(x$qoi_file)) {
+    stop("Quantity-of-interest file name must be provided", call. = FALSE)
   }
   if (!is.null(nparams)) {
     if (!all(!is.na(nparams) & nparams > 0)) {
@@ -86,21 +87,21 @@ validate_shell_solver <- function(x) {
   x
 }
 
-read_value <- function(solver) {
-  value_file <- output_file(solver, "value")
-  if (!file.exists(value_file)) {
-    stop("Value file does not exist: ", value_file, call. = FALSE)
+read_qoi <- function(solver) {
+  qoi_file <- output_file(solver, "qoi")
+  if (!file.exists(qoi_file)) {
+    stop("Quantity-of-interest file does not exist: ", qoi_file, call. = FALSE)
   }
-  solver$read_value(value_file)
+  solver$read_qoi(qoi_file)
 }
 
-read_gradient <- function(solver) {
-  if (!provides_gradient(solver)) {
+read_jacobian <- function(solver) {
+  if (!provides_jacobian(solver)) {
     return(NA)
   }
-  gradient_file <- output_file(solver, "gradient")
-  if (!file.exists(gradient_file)) {
+  jacobian_file <- output_file(solver, "jacobian")
+  if (!file.exists(jacobian_file)) {
     return(NA)
   }
-  solver$read_gradient(gradient_file)
+  solver$read_jacobian(jacobian_file)
 }
