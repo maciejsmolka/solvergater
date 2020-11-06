@@ -3,7 +3,8 @@
 #' Function factory producing functions for use in optimization. These are
 #' objective function and its gradient. They can be used, e.g., as parameters
 #' `fn` and `gr` of [stats::optim()]. Their parameters `...` are passed to
-#' [run()].
+#' [run()]: note that some solvers can require some parameters, e.g.
+#' `shell_solver` requires `precision`.
 #'
 #' @param solver object of class `solver`
 #' @param data observed ('exact') data
@@ -14,6 +15,14 @@
 #' * `gradient` objective gradient function.
 #'
 #' @export
+#'
+#' @examples
+#' s <- fake_simple_solver(4, 5)
+#' observed_data <- run(s, c(10, 10, 10, 10), precision = 1.0)$qoi
+#' x <- c(10.5, 9.44, 10.21, 8.14)
+#' solver_obj <- objective(s, observed_data)
+#' solver_obj$value(x, precision = 30.0)
+#' solver_obj$gradient(x, precision = 30.0)
 objective <- function(solver, data, misfit_fn = lsq_misfit) {
   value <- function(x, ...) {
     computed <- run(solver, x, ...)

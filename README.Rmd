@@ -45,13 +45,13 @@ the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("maciejsmolka/solvergater")
 ```
-## Example
+## Usage
 
-This is a basic example which shows you how to run an external solver to
+Let us start with a basic example which shows you how to run an external solver to
 compute the quantity of interest and its Jacobian matrix with respect to
 the parameters. The example uses a mock solver provided with the package.
 
-```{r example}
+```{r exampleRun}
 library(solvergater)
 rscript_path <- file.path(R.home(), "bin", "Rscript")
 solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
@@ -63,3 +63,22 @@ s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
 run(s, c(20.11, 5, -1.2, 10.4), 10)
 ```
 
+The basic use case for `solvergater` is the support of the optimization problems
+with special attention paid for inverse problems. A simulated problem of the latter
+type can be as follows.
+
+First, we prepare some 'observed data' by running the solver at a high accuracy level.
+
+```{r prepareData}
+observed_data <- run(s, c(10, 10, 10, 10), precision = 1.0)$qoi
+```
+
+Then, as the objective we use the misfit between observed data and a current
+proposed set of parameters.
+
+```{r optimization}
+x <- c(10.5, 9.44, 10.21, 8.14)
+solver_obj <- objective(s, observed_data)
+solver_obj$value(x, precision = 30.0)
+solver_obj$gradient(x, precision = 30.0)
+```

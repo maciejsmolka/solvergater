@@ -1,0 +1,26 @@
+#' Gateway for `fake_simple.R` solver
+#'
+#' A helper to create `solver` object encapsulating calls to `fake_simple.R`.
+#'
+#' @param nparams numeric scalar, number of parameters.
+#' @param nqoi numeric scalar, number of quantities of interest.
+#' @param wd character, working directory.
+#' @param ... additional parameters passed to [shell_solver()].
+#'
+#' @export
+#'
+#' @examples
+#' s <- fake_simple_solver(3, 4)
+#' run(s, c(-1, 5.2, 0), 90)
+fake_simple_solver <- function(nparams, nqoi, wd = tempdir(), ...) {
+  rscript_path <- file.path(R.home(), "bin", "Rscript")
+  solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
+  solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
+  shell_solver(
+    solver_cmd,
+    nparams = nparams,
+    qoi_file = "output_qoi",
+    jacobian_file = "output_jacobian",
+    wd = wd
+    )
+}

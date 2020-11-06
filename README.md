@@ -40,12 +40,12 @@ You can install the development version from
 devtools::install_github("maciejsmolka/solvergater")
 ```
 
-## Example
+## Usage
 
-This is a basic example which shows you how to run an external solver to
-compute the quantity of interest and its Jacobian matrix with respect to
-the parameters. The example uses a mock solver provided with the
-package.
+Let us start with a basic example which shows you how to run an external
+solver to compute the quantity of interest and its Jacobian matrix with
+respect to the parameters. The example uses a mock solver provided with
+the package.
 
 ``` r
 library(solvergater)
@@ -58,8 +58,8 @@ s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
                   jacobian_file = "output_jacobian", wd = tempdir())
 run(s, c(20.11, 5, -1.2, 10.4), 10)
 #> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 20.11 5 -1.2 10.4 10
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpXwKerA
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpXwKerA
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
 #> Solver exited normally
 #> $qoi
 #> [1]      34.3100     539.0121    9380.8630  175874.8000 3413761.0000
@@ -71,4 +71,39 @@ run(s, c(20.11, 5, -1.2, 10.4), 10)
 #> [3,]   1213.236   75  4.320   324.480
 #> [4,]  32530.910  500 -6.912  4499.456
 #> [5,] 817745.700 3125 10.368 58492.930
+```
+
+The basic use case for `solvergater` is the support of the optimization
+problems with special attention paid for inverse problems. A simulated
+problem of the latter type can be as follows.
+
+First, we prepare some ‘observed data’ by running the solver at a high
+accuracy level.
+
+``` r
+observed_data <- run(s, c(10, 10, 10, 10), precision = 1.0)$qoi
+#> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10 10 10 10 1
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+#> Solver exited normally
+```
+
+Then, as the objective we use the misfit between observed data and a
+current proposed set of parameters.
+
+``` r
+x <- c(10.5, 9.44, 10.21, 8.14)
+solver_obj <- objective(s, observed_data)
+solver_obj$value(x, precision = 30.0)
+#> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10.5 9.44 10.21 8.14 30
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+#> Solver exited normally
+#> [1] 2594156034
+solver_obj$gradient(x, precision = 30.0)
+#> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10.5 9.44 10.21 8.14 30
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+#> Solver exited normally
+#> [1] -6208209534 -4059190749 -5551351184 -2246937119
 ```
