@@ -43,20 +43,32 @@ devtools::install_github("maciejsmolka/solvergater")
 ## Example
 
 This is a basic example which shows you how to run an external solver to
-compute the objective value and (possibly) gradient. The example uses
-`r_solver` which in fact does not perform any external calls. In actual
-computations solver classes like `shell_solver` are more useful.
+compute the quantity of interest and its Jacobian matrix with respect to
+the parameters. The example uses a mock solver provided with the
+package.
 
 ``` r
 library(solvergater)
-solver <- r_solver(objective = function(x) sum(x^2), 
-                         gradient = function(x) 2 * x)
-# A more realistic code would be:
-# solver <- shell_solver("/a/path/to/solver/exec")
-obj <- run(solver, c(1.2, 3.4, 0.2), precision = 2.3)
-obj$value
-#> [1] 13.04
-obj$gradient
-#> [1] 2.4 6.8 0.4
-## basic example code
+rscript_path <- file.path(R.home(), "bin", "Rscript")
+solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
+nparams <- 4
+nqoi <- 5
+solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
+s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
+                  jacobian_file = "output_jacobian", wd = tempdir())
+run(s, c(20.11, 5, -1.2, 10.4), 10)
+#> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 20.11 5 -1.2 10.4 10
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpXwKerA
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpXwKerA
+#> Solver exited normally
+#> $qoi
+#> [1]      34.3100     539.0121    9380.8630  175874.8000 3413761.0000
+#> 
+#> $jacobian
+#>            [,1] [,2]   [,3]      [,4]
+#> [1,]      1.000    1  1.000     1.000
+#> [2,]     40.220   10 -2.400    20.800
+#> [3,]   1213.236   75  4.320   324.480
+#> [4,]  32530.910  500 -6.912  4499.456
+#> [5,] 817745.700 3125 10.368 58492.930
 ```
