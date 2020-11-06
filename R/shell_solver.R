@@ -5,6 +5,7 @@
 #' parameters in output text files.
 #'
 #' @param cmd command to run the solver executable.
+#' @param nparams numeric, number of parameters, must be provided.
 #' @param qoi_file name of file containing the computed quantity of interest, can
 #' be absolute or relative to `wd`, cannot be `NULL`.
 #' @param jacobian_file name of file containing the computed Jacobian matrix
@@ -19,7 +20,6 @@
 #' has to be run, when `NULL` current working directory will be used
 #' @param ignore.stdout logical, should solver STDOUT be ignored?
 #' @param ignore.stderr logical, should solver STDERR be ignored?
-#' @param nparams numeric, number of parameters, unspecified if `NULL`
 #'
 #' @return An object of classes `shell_solver` and `solver`
 #'
@@ -28,21 +28,23 @@
 #' @examples
 #' rscript_path <- file.path(R.home(), "bin", "Rscript")
 #' solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
-#' solver_cmd <- paste(rscript_path, solver_path)
-#' s <- shell_solver(solver_cmd, qoi_file = "output_qoi",
+#' nparams <- 2
+#' nqoi <- 5
+#' solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
+#' s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
 #' jacobian_file = "output_jacobian", wd = tempdir())
 #' run(s, c(20, 5), 10)
 shell_solver <- function(
   cmd,
+  nparams,
   qoi_file,
   jacobian_file = NULL,
   qoi_read_fn = function(file) scan(file, quiet = TRUE),
-  jacobian_read_fn = if (!is.null(jacobian_file)) qoi_read_fn,
+  jacobian_read_fn = if (!is.null(jacobian_file)) read_matrix(nparams),
   arg_combine_fn = function(x, precision) paste(c(x, precision), collapse = " "),
   wd = NULL,
   ignore.stdout = TRUE,
-  ignore.stderr = TRUE,
-  nparams = NULL
+  ignore.stderr = TRUE
   ) {
   validate_shell_solver(
     new_shell_solver(
@@ -70,6 +72,9 @@ new_shell_solver <- function(x, nparams, provides_jacobian) {
 
 validate_shell_solver <- function(x) {
   nparams <- attr(x, "nparams")
+  if (is.null(nparams)) {
+    stop("Number of parameters must be provided", call. = FALSE)
+  }
   if (is.null(x$cmd)) {
     stop("Command to run solver must be provided", call. = FALSE)
   }

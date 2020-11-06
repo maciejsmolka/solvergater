@@ -1,26 +1,40 @@
 #!/usr/bin/env Rscript --vanilla
 
-# A fake solver that is run from the command line. It accepts command line args:
-# all-but-last numeric params are interpreted as the point to compute objective at,
-# the last numeric arg is the precision. The solver in general computes the square
-# function, i.e. the sum of coordinate squares (and its gradient). The exception is
+# A fake solver that is run from the command line. It accepts command line args
+# (non-numeric args are ignored):
+#
+# * first arg is the number of problem parameters (N)
+# * second is the number of quantities of interest (K)
+# * following N args are parameter values
+# * last arg is the precision
+# * additional args are silently ignored
+#
+# Solver in general computes the value and the Jacobian matrix of quantities
+# of interest, where
+# k-th quantity of interest is sum(x^k) where x is the vector of parameter values.
+# The exception is
 # the ball around point (1000, 1000, ..., 1000) (in any dimension) with radius
 # equal to the given precision. In this area the solver exits with error code -1.
+
+library(solvergater)
 
 fake_simple <- function(qoi_file = "output_qoi",
                         jacobian_file = "output_jacobian",
                         cmd_args = commandArgs(TRUE)) {
   tryCatch({
-    message("QOI file: ", qoi_file)
-    message("Jacobian file: ", jacobian_file)
+    cat("QOI file:", qoi_file, "\n")
+    cat("Jacobian file:", jacobian_file, "\n")
     input <- process_args(cmd_args)
-    message("Point: ", toString(input$point))
-    message("Precision: ", input$precision)
-    y <- calculate_objective(input$point, input$precision)
-    message("OQOI value: ", y$qoi)
-    message("QOI Jacobian: ", toString(y$jacobian))
+    cat("Number of parameters:", input$nparams, "\n")
+    cat("Number of quantities of interest (QOI):", input$nqoi, "\n")
+    cat("Point:", input$point, "\n")
+    cat("Precision:", input$precision, "\n")
+    y <- calculate_objective(input$point, input$precision, input$nparams, input$nqoi)
+    cat("QOI value(s):", y$qoi, "\n")
+    cat("QOI Jacobian:\n")
+    print(y$jacobian)
     write(y$qoi, file = qoi_file)
-    write(y$jacobian, file = jacobian_file)
+    write_matrix(y$jacobian, file = jacobian_file)
   },
   error = function(e) {
     warning(conditionMessage(e), call. = FALSE)
@@ -32,24 +46,33 @@ fake_simple <- function(qoi_file = "output_qoi",
 process_args <- function(cmd_args) {
   numeric_args <- suppressWarnings(as.numeric(cmd_args))
   numeric_args <- numeric_args[!is.na(numeric_args)]
-  point <- numeric_args[-length(numeric_args)]
-  precision <- numeric_args[length(numeric_args)]
-  if (length(point) == 0) {
-    stop("No point given to compute objective at", call. = FALSE)
+  nparams <- numeric_args[1]
+  if (is.na(nparams) || nparams < 1) {
+    stop("Number of parameters must be numeric and not less than 1", call. = FALSE)
   }
-  if (length(precision) == 0) {
+  nqoi <- numeric_args[2]
+  if (is.na(nqoi) || nqoi < 1) {
+    stop("Number of QOIs must be numeric and not less than 1", call. = FALSE)
+  }
+  point <- numeric_args[3:(2 + nparams)]
+  precision <- numeric_args[3 + nparams]
+  if (any(is.na(point))) {
+    stop("Point length must equal number of parameters", call. = FALSE)
+  }
+  if (is.na(precision)) {
     stop("Solver precision not given", call. = FALSE)
   }
   if (precision < 0) {
     stop("Precision must be positive", call. = FALSE)
   }
-  list(point = point, precision = precision)
+  list(nparams = nparams, nqoi = nqoi, point = point, precision = precision)
 }
 
 PRECISION_CONSTANT <- 10
 
-calculate_objective <- function(x, precision) {
+calculate_objective <- function(x, precision, nparams, nqoi) {
   stopifnot(is.numeric(x))
+  stopifnot(length(x) == nparams)
   for (i in seq_len(PRECISION_CONSTANT / precision)) {
     cat(".")
     Sys.sleep(1)
@@ -60,7 +83,9 @@ calculate_objective <- function(x, precision) {
   if (is_faulty(x, precision)) {
     stop("Solver error", call. = FALSE)
   }
-  list(qoi = sum(x^2), jacobian = 2 * x)
+  qoi <- vapply(1:nqoi, power_fn(x), FUN.VALUE = double(1))
+  jac <- vapply(1:nqoi, power_grad(x), FUN.VALUE = double(length(x)))
+  list(qoi = qoi, jacobian = t(jac))
 }
 
 FAULTY_COORD <- 1000
@@ -68,6 +93,23 @@ FAULTY_COORD <- 1000
 is_faulty <- function(x, precision) {
   x0 <- rep_len(FAULTY_COORD, length(x))
   all((x - x0)^2 <= precision^2)
+}
+
+# Function factories producing vector power functions with gradient
+power_fn <- function(x) {
+  stopifnot(is.numeric(x))
+  function(k) {
+    stopifnot(is.numeric(k), k >= 1, k %% 1 == 0)
+    sum(x^k)
+  }
+}
+
+power_grad <- function(x) {
+  stopifnot(is.numeric(x))
+  function(k) {
+    stopifnot(is.numeric(k), k >= 1, k %% 1 == 0)
+    k * x^(k - 1)
+  }
 }
 
 fake_simple()

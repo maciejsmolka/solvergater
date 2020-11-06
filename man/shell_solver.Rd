@@ -6,19 +6,21 @@
 \usage{
 shell_solver(
   cmd,
+  nparams,
   qoi_file,
   jacobian_file = NULL,
   qoi_read_fn = function(file) scan(file, quiet = TRUE),
-  jacobian_read_fn = if (!is.null(jacobian_file)) qoi_read_fn,
+  jacobian_read_fn = if (!is.null(jacobian_file)) read_matrix(nparams),
   arg_combine_fn = function(x, precision) paste(c(x, precision), collapse = " "),
   wd = NULL,
   ignore.stdout = TRUE,
-  ignore.stderr = TRUE,
-  nparams = NULL
+  ignore.stderr = TRUE
 )
 }
 \arguments{
 \item{cmd}{command to run the solver executable.}
+
+\item{nparams}{numeric, number of parameters, must be provided.}
 
 \item{qoi_file}{name of file containing the computed quantity of interest, can
 be absolute or relative to \code{wd}, cannot be \code{NULL}.}
@@ -41,8 +43,6 @@ has to be run, when \code{NULL} current working directory will be used}
 \item{ignore.stdout}{logical, should solver STDOUT be ignored?}
 
 \item{ignore.stderr}{logical, should solver STDERR be ignored?}
-
-\item{nparams}{numeric, number of parameters, unspecified if \code{NULL}}
 }
 \value{
 An object of classes \code{shell_solver} and \code{solver}
@@ -55,8 +55,10 @@ parameters in output text files.
 \examples{
 rscript_path <- file.path(R.home(), "bin", "Rscript")
 solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
-solver_cmd <- paste(rscript_path, solver_path)
-s <- shell_solver(solver_cmd, qoi_file = "output_qoi",
+nparams <- 2
+nqoi <- 5
+solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
+s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
 jacobian_file = "output_jacobian", wd = tempdir())
 run(s, c(20, 5), 10)
 }
