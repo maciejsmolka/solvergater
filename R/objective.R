@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' s <- fake_simple_solver(4, 5)
-#' observed_data <- run(s, c(10, 10, 10, 10), precision = 1.0)$qoi
+#' observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0)$qoi
 #' x <- c(10.5, 9.44, 10.21, 8.14)
 #' solver_obj <- objective(s, observed_data)
 #' solver_obj$value(x, precision = 30.0)

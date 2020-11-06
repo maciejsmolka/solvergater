@@ -70,7 +70,7 @@ type can be as follows.
 First, we prepare some 'observed data' by running the solver at a high accuracy level.
 
 ```{r prepareData}
-observed_data <- run(s, c(10, 10, 10, 10), precision = 1.0)$qoi
+observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0)$qoi
 ```
 
 Then, as the objective we use the misfit between observed data and a current

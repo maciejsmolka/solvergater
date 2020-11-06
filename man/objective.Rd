@@ -24,5 +24,14 @@ List with one or two components:
 Function factory producing functions for use in optimization. These are
 objective function and its gradient. They can be used, e.g., as parameters
 \code{fn} and \code{gr} of \code{\link[stats:optim]{stats::optim()}}. Their parameters \code{...} are passed to
-\code{\link[=run]{run()}}.
+\code{\link[=run]{run()}}: note that some solvers can require some parameters, e.g.
+\code{shell_solver} requires \code{precision}.
+}
+\examples{
+s <- fake_simple_solver(4, 5)
+observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0)$qoi
+x <- c(10.5, 9.44, 10.21, 8.14)
+solver_obj <- objective(s, observed_data)
+solver_obj$value(x, precision = 30.0)
+solver_obj$gradient(x, precision = 30.0)
 }

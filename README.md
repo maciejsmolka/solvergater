@@ -58,8 +58,8 @@ s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
                   jacobian_file = "output_jacobian", wd = tempdir())
 run(s, c(20.11, 5, -1.2, 10.4), 10)
 #> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 20.11 5 -1.2 10.4 10
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpJLhWQ7
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpJLhWQ7
 #> Solver exited normally
 #> $qoi
 #> [1]      34.3100     539.0121    9380.8630  175874.8000 3413761.0000
@@ -81,10 +81,10 @@ First, we prepare some ‘observed data’ by running the solver at a high
 accuracy level.
 
 ``` r
-observed_data <- run(s, c(10, 10, 10, 10), precision = 1.0)$qoi
-#> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10 10 10 10 1
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0)$qoi
+#> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10 10 10 10 5
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpJLhWQ7
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpJLhWQ7
 #> Solver exited normally
 ```
 
@@ -96,14 +96,14 @@ x <- c(10.5, 9.44, 10.21, 8.14)
 solver_obj <- objective(s, observed_data)
 solver_obj$value(x, precision = 30.0)
 #> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10.5 9.44 10.21 8.14 30
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpJLhWQ7
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpJLhWQ7
 #> Solver exited normally
 #> [1] 2594156034
 solver_obj$gradient(x, precision = 30.0)
 #> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10.5 9.44 10.21 8.14 30
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpnVlqXy
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpJLhWQ7
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpJLhWQ7
 #> Solver exited normally
 #> [1] -6208209534 -4059190749 -5551351184 -2246937119
 ```
