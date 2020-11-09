@@ -7,10 +7,12 @@ Authors@R:
            role = c("aut", "cre"),
            email = "smolka@agh.edu.pl",
            comment = c(ORCID = "https://orcid.org/0000-0002-3386-0555"))
-Description: It is a common task to solve an optimization problem when the objective
-    is computed using an external application, e.g. an adaptive finite-element PDE 
-    solver, that gets its input from the command line and writes its output to a 
-    number of files. The package provides a simple R gateway to such external apps.
+Description: 
+    It is a common task to solve an optimization problem when the objective
+    is computed using an external application such as a finite-element-method partial
+    differential equation solver that gets its input from the command line and 
+    writes its output to a number of files. This package provides a simple R 
+    gateway to such external apps.
 License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: true
