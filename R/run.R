@@ -54,23 +54,81 @@ run.r_solver <- function(solver, x, ...) {
 #' and list of `NA`'s is returned.
 #'
 #' @param precision positive numeric scalar, expected solver accuracy (if applicable)
+#' @param ignore.stdout logical, if not `NULL` overrides default setting in
+#' `shell_solver` object
+#' @param ignore.stderr logical, if not `NULL` overrides default setting in
+#' `shell_solver` object
 #'
 #' @export
-run.shell_solver <- function(solver, x, precision, ...) {
+run.shell_solver <- function(solver, x, precision, ignore.stdout = NULL,
+                             ignore.stderr = NULL, ...) {
   assert_point_not_null(x)
   assert_precision_not_null(precision)
   NextMethod("run")
   cmd <- paste(solver$cmd, solver$combine_args(x, precision))
   message("Solver command: ", cmd)
-  status <- run_in(cmd, solver$wd, ignore.stdout = solver$ignore.stdout,
-                   ignore.stderr = solver$ignore.stderr)
-  if (status != 0) {
-    warning("Solver exited with status ", status, call. = FALSE)
-    return(list(qoi = NA, jacobian = NA))
+  do_ignore_stdout <- solver$ignore.stdout
+  if (!is.null(ignore.stdout)) {
+    do_ignore_stdout <- ignore.stdout
+  }
+  do_ignore_stderr <- solver$ignore.stderr
+  if (!is.null(ignore.stderr)) {
+    do_ignore_stderr <- ignore.stderr
+  }
+  result <- do_run(solver, cmd, ignore.stdout = do_ignore_stdout,
+                   ignore.stderr = do_ignore_stderr)
+  if (result$status != 0) {
+    warning("Solver exited with status ", result$status, call. = FALSE)
   } else {
     message("Solver exited normally")
   }
+  result[["status"]] <- NULL
+  result
+}
+
+# Run given command in given directory
+do_run <- function(solver, cmd, ignore.stdout, ignore.stderr) {
+  if (!is.null(solver$wd)) {
+    old_wd <- getwd()
+    message("Entering ", solver$wd)
+    setwd(solver$wd)
+  }
+  status <- system(cmd, ignore.stdout = ignore.stdout, ignore.stderr = ignore.stderr)
+  if (status != 0) {
+    return(list(status = status, qoi = NA, jacobian = NA))
+  }
   qoi <- read_qoi(solver)
   jac <- read_jacobian(solver)
-  list(qoi = qoi, jacobian = jac)
+  if (!is.null(solver$wd)) {
+    message("Exiting ", solver$wd)
+    setwd(old_wd)
+  }
+  list(status = 0, qoi = qoi, jacobian = jac)
+}
+
+# Read QOI file (2nd arg needed if run from outside solver working dir)
+read_qoi <- function(solver, make_path_absolute = FALSE) {
+  qoi_file <- solver$qoi_file
+  if (make_path_absolute) {
+    qoi_file <- output_file(solver, "qoi")
+  }
+  if (!file.exists(qoi_file)) {
+    stop("Quantity-of-interest file does not exist: ", qoi_file, call. = FALSE)
+  }
+  solver$read_qoi(qoi_file)
+}
+
+# Read QOI Jacobian file (2nd arg needed if run from outside solver working dir)
+read_jacobian <- function(solver, make_path_absolute = FALSE) {
+  if (!provides_jacobian(solver)) {
+    return(NA)
+  }
+  jacobian_file <- solver$jacobian_file
+  if (make_path_absolute) {
+    jacobian_file <- output_file(solver, "jacobian")
+  }
+  if (!file.exists(jacobian_file)) {
+    return(NA)
+  }
+  solver$read_jacobian(jacobian_file)
 }

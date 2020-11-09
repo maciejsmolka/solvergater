@@ -13,7 +13,7 @@ run(solver, x, ...)
 
 \method{run}{r_solver}(solver, x, ...)
 
-\method{run}{shell_solver}(solver, x, precision, ...)
+\method{run}{shell_solver}(solver, x, precision, ignore.stdout = NULL, ignore.stderr = NULL, ...)
 }
 \arguments{
 \item{solver}{solver object}
@@ -23,6 +23,12 @@ run(solver, x, ...)
 \item{...}{additional arguments passed to other functions}
 
 \item{precision}{positive numeric scalar, expected solver accuracy (if applicable)}
+
+\item{ignore.stdout}{logical, if not \code{NULL} overrides default setting in
+\code{shell_solver} object}
+
+\item{ignore.stderr}{logical, if not \code{NULL} overrides default setting in
+\code{shell_solver} object}
 }
 \value{
 List with components:

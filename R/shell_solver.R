@@ -91,22 +91,3 @@ validate_shell_solver <- function(x) {
   }
   x
 }
-
-read_qoi <- function(solver) {
-  qoi_file <- output_file(solver, "qoi")
-  if (!file.exists(qoi_file)) {
-    stop("Quantity-of-interest file does not exist: ", qoi_file, call. = FALSE)
-  }
-  solver$read_qoi(qoi_file)
-}
-
-read_jacobian <- function(solver) {
-  if (!provides_jacobian(solver)) {
-    return(NA)
-  }
-  jacobian_file <- output_file(solver, "jacobian")
-  if (!file.exists(jacobian_file)) {
-    return(NA)
-  }
-  solver$read_jacobian(jacobian_file)
-}
