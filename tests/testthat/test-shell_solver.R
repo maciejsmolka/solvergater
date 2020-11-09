@@ -13,7 +13,7 @@ test_that("running external solver works", {
     jacobian_file = "output_jacobian",
     wd = tempdir()
     )
-  obj <- run(s, x, precision)
+  obj <- run(s, x, precision, ignore.stdout = FALSE, ignore.stderr = FALSE)
   expect_true(file.exists(output_file(s, "qoi")))
   expect_true(file.exists(output_file(s, "jacobian")))
   expect_length(obj$qoi, nqoi)
