@@ -13,7 +13,15 @@ run(solver, x, ...)
 
 \method{run}{r_solver}(solver, x, ...)
 
-\method{run}{shell_solver}(solver, x, precision, ignore.stdout = NULL, ignore.stderr = NULL, ...)
+\method{run}{shell_solver}(
+  solver,
+  x,
+  precision,
+  ignore.stdout = NULL,
+  ignore.stderr = NULL,
+  silent = FALSE,
+  ...
+)
 }
 \arguments{
 \item{solver}{solver object}
@@ -29,6 +37,9 @@ run(solver, x, ...)
 
 \item{ignore.stderr}{logical, if not \code{NULL} overrides default setting in
 \code{shell_solver} object}
+
+\item{silent}{logical, suppress diagnostic messages (not warnings), \code{TRUE} forces
+\code{ignore.stdout = TRUE} and \code{ignore.stderr = TRUE}}
 }
 \value{
 List with components:

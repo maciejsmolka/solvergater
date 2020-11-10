@@ -59,11 +59,7 @@ nqoi <- 5
 solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
 s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
                   jacobian_file = "output_jacobian", wd = tempdir())
-run(s, c(20.11, 5, -1.2, 10.4), 10)
-#> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 20.11 5 -1.2 10.4 10
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpTvcMxT
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpTvcMxT
-#> Solver exited normally
+run(s, c(20.11, 5, -1.2, 10.4), 10, silent = TRUE)
 #> $qoi
 #> [1]      34.3100     539.0121    9380.8630  175874.8000 3413761.0000
 #> 
@@ -84,29 +80,32 @@ First, we prepare some ‘observed data’ by running the solver at a high
 accuracy level.
 
 ``` r
-observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0)$qoi
-#> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10 10 10 10 5
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpTvcMxT
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpTvcMxT
-#> Solver exited normally
+observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)$qoi
 ```
 
 Then, as the objective we use the misfit between observed data and a
-current proposed set of parameters.
+current proposed set of parameters. We can compute it in two ways.
+First, we can obtain an objective function returning value and gradient
+at the same time.
 
 ``` r
 x <- c(10.5, 9.44, 10.21, 8.14)
-solver_obj <- objective(s, observed_data)
-solver_obj$value(x, precision = 30.0)
-#> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10.5 9.44 10.21 8.14 30
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpTvcMxT
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpTvcMxT
-#> Solver exited normally
+solver_obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
+solver_obj(x)
+#> $value
 #> [1] 2594156034
-solver_obj$gradient(x, precision = 30.0)
-#> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10.5 9.44 10.21 8.14 30
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpTvcMxT
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpTvcMxT
-#> Solver exited normally
+#> 
+#> $gradient
+#> [1] -6208209534 -4059190749 -5551351184 -2246937119
+```
+
+Second, we can obtain two separate functions for value and gradient.
+This form is intended for the use in \[stats::optim()\].
+
+``` r
+solver_obj <- objective_functions(s, observed_data, precision = 30.0, silent = TRUE)
+solver_obj$value(x)
+#> [1] 2594156034
+solver_obj$gradient(x)
 #> [1] -6208209534 -4059190749 -5551351184 -2246937119
 ```

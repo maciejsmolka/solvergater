@@ -1,42 +1,74 @@
-#' Solver objective
+#' Solver objective functions
 #'
 #' Function factory producing functions for use in optimization. These are
 #' objective function and its gradient. They can be used, e.g., as parameters
-#' `fn` and `gr` of [stats::optim()]. Their parameters `...` are passed to
-#' [run()]: note that some solvers can require some parameters, e.g.
-#' `shell_solver` requires `precision`.
+#' `fn` and `gr` of [stats::optim()].
 #'
-#' @param solver object of class `solver`
-#' @param data observed ('exact') data
-#' @param misfit_fn function to compute misfit between `data` and result of simulation
+#' @param solver object of class `solver`.
+#' @param data observed ('exact') data.
+#' @param misfit_fn function to compute misfit between `data` and result of simulation.
+#' @param ... additional args passed to [run()], note that some solvers can require
+#' some parameters, e.g. `shell_solver` requires `precision`.
 #'
 #' @return List with one or two components:
 #' * `value` objective value function,
-#' * `gradient` objective gradient function.
+#' * `gradient` objective gradient function, missing if solver does not compute
+#' Jacobian matrix.
 #'
 #' @export
 #'
 #' @examples
 #' s <- fake_simple_solver(4, 5)
-#' observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0)$qoi
+#' observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)$qoi
 #' x <- c(10.5, 9.44, 10.21, 8.14)
-#' solver_obj <- objective(s, observed_data)
-#' solver_obj$value(x, precision = 30.0)
-#' solver_obj$gradient(x, precision = 30.0)
-objective <- function(solver, data, misfit_fn = lsq_misfit) {
-  value <- function(x, ...) {
-    computed <- run(solver, x, ...)
-    misfit_fn(computed$qoi, data)$value
+#' solver_funs <- objective_functions(s, observed_data, precision = 30.0, silent = TRUE)
+#' solver_funs$value(x)
+#' solver_funs$gradient(x)
+objective_functions <- function(solver, data, misfit_fn = lsq_misfit, ...) {
+  solver_obj <- objective(solver, data, misfit_fn = misfit_fn, ...)
+  value <- function(x) {
+    solver_obj(x)$value
   }
   result <- list(value = value)
   if (provides_jacobian(solver)) {
-    gradient <- function(x, ...) {
-      computed <- run(solver, x, ...)
-      misfit_fn(computed$qoi, data, computed$jacobian)$gradient
+    gradient <- function(x) {
+      solver_obj(x)$gradient
     }
     result$gradient <- gradient
   }
   result
+}
+
+#' Solver objective
+#'
+#' Function factory producing solver objective function returning value and
+#' (possibly) gradient at the same time.
+#'
+#' @param solver object of class `solver`.
+#' @param data observed ('exact') data.
+#' @param misfit_fn function to compute misfit between `data` and result of simulation.
+#' @param ... additional args passed to [run()], note that some solvers can require
+#' some parameters, e.g. `shell_solver` requires `precision`.
+#'
+#' @return Function with numeric parameter `x` returning list with one or two
+#' components:
+#' * `value` numeric, objective value,
+#' * `gradient` numeric, objective gradient, missing if solver does not compute
+#' Jacobian matrix.
+#'
+#' @export
+#'
+#' @examples
+#' s <- fake_simple_solver(4, 5)
+#' observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)$qoi
+#' x <- c(10.5, 9.44, 10.21, 8.14)
+#' solver_obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
+#' solver_obj(x)
+objective <- function(solver, data, misfit_fn = lsq_misfit, ...) {
+  function(x) {
+    computed <- run(solver, x, ...)
+    misfit_fn(computed$qoi, data, jacobian = computed$jacobian)
+  }
 }
 
 #' Least square misfit
