@@ -12,10 +12,11 @@ status](https://travis-ci.org/maciejsmolka/solvergater.svg?branch=master)](https
 <!-- badges: end -->
 
 It is a common task to solve an optimization problem when the objective
-is computed using an external application, e.g. an adaptive
-finite-element PDE solver, that gets its input from the command line and
-writes its output to a number of files. The `solvergater` package
-provides a simple R gateway to such external apps.
+is computed using an external application such as a
+finite-element-method partial differential equation solver that gets its
+input from the command line and writes its output to a number of files.
+The `solvergater` package provides a simple R gateway to such external
+apps.
 
 ## Installation
 
@@ -60,8 +61,8 @@ s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
                   jacobian_file = "output_jacobian", wd = tempdir())
 run(s, c(20.11, 5, -1.2, 10.4), 10)
 #> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 20.11 5 -1.2 10.4 10
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpcC0g17
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpcC0g17
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//Rtmp3DnTk5
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//Rtmp3DnTk5
 #> Solver exited normally
 #> $qoi
 #> [1]      34.3100     539.0121    9380.8630  175874.8000 3413761.0000
@@ -85,8 +86,8 @@ accuracy level.
 ``` r
 observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0)$qoi
 #> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10 10 10 10 5
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpcC0g17
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpcC0g17
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//Rtmp3DnTk5
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//Rtmp3DnTk5
 #> Solver exited normally
 ```
 
@@ -98,14 +99,14 @@ x <- c(10.5, 9.44, 10.21, 8.14)
 solver_obj <- objective(s, observed_data)
 solver_obj$value(x, precision = 30.0)
 #> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10.5 9.44 10.21 8.14 30
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpcC0g17
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpcC0g17
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//Rtmp3DnTk5
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//Rtmp3DnTk5
 #> Solver exited normally
 #> [1] 2594156034
 solver_obj$gradient(x, precision = 30.0)
 #> Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Library/Frameworks/R.framework/Versions/4.0/Resources/library/solvergater/exec/fake_simple.R 4 5 10.5 9.44 10.21 8.14 30
-#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpcC0g17
-#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//RtmpcC0g17
+#> Entering /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//Rtmp3DnTk5
+#> Exiting /var/folders/4g/7jf88w2d0wv30c08pl1kwcgh0000gn/T//Rtmp3DnTk5
 #> Solver exited normally
 #> [1] -6208209534 -4059190749 -5551351184 -2246937119
 ```
