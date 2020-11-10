@@ -14,3 +14,9 @@ assert_arg_not_null <- function(arg_value, arg_name) {
     stop("Argument value not provided: ", arg_name)
   }
 }
+
+s_message <- function(..., silent = FALSE) {
+  if (!silent) {
+    message(...)
+  }
+}

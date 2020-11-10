@@ -58,15 +58,21 @@ run.r_solver <- function(solver, x, ...) {
 #' `shell_solver` object
 #' @param ignore.stderr logical, if not `NULL` overrides default setting in
 #' `shell_solver` object
+#' @param silent logical, suppress diagnostic messages (not warnings), `TRUE` forces
+#' `ignore.stdout = TRUE` and `ignore.stderr = TRUE`
 #'
 #' @export
 run.shell_solver <- function(solver, x, precision, ignore.stdout = NULL,
-                             ignore.stderr = NULL, ...) {
+                             ignore.stderr = NULL, silent = FALSE, ...) {
   assert_point_not_null(x)
   assert_precision_not_null(precision)
+  if (silent) {
+    ignore.stdout <- TRUE
+    ignore.stderr <- TRUE
+  }
   NextMethod("run")
   cmd <- paste(solver$cmd, solver$combine_args(x, precision))
-  message("Solver command: ", cmd)
+  s_message("Solver command: ", cmd, silent = silent)
   do_ignore_stdout <- solver$ignore.stdout
   if (!is.null(ignore.stdout)) {
     do_ignore_stdout <- ignore.stdout
@@ -76,21 +82,21 @@ run.shell_solver <- function(solver, x, precision, ignore.stdout = NULL,
     do_ignore_stderr <- ignore.stderr
   }
   result <- do_run(solver, cmd, ignore.stdout = do_ignore_stdout,
-                   ignore.stderr = do_ignore_stderr)
+                   ignore.stderr = do_ignore_stderr, silent = silent)
   if (result$status != 0) {
     warning("Solver exited with status ", result$status, call. = FALSE)
   } else {
-    message("Solver exited normally")
+    s_message("Solver exited normally", silent = silent)
   }
   result[["status"]] <- NULL
   result
 }
 
 # Run given command in given directory
-do_run <- function(solver, cmd, ignore.stdout, ignore.stderr) {
+do_run <- function(solver, cmd, ignore.stdout, ignore.stderr, silent) {
   if (!is.null(solver$wd)) {
     old_wd <- getwd()
-    message("Entering ", solver$wd)
+    s_message("Entering ", solver$wd, silent = silent)
     setwd(solver$wd)
   }
   status <- system(cmd, ignore.stdout = ignore.stdout, ignore.stderr = ignore.stderr)
@@ -100,7 +106,7 @@ do_run <- function(solver, cmd, ignore.stdout, ignore.stderr) {
   qoi <- read_qoi(solver)
   jac <- read_jacobian(solver)
   if (!is.null(solver$wd)) {
-    message("Exiting ", solver$wd)
+    s_message("Exiting ", solver$wd, silent = silent)
     setwd(old_wd)
   }
   list(status = 0, qoi = qoi, jacobian = jac)
