@@ -16,8 +16,6 @@
 # the ball around point (1000, 1000, ..., 1000) (in any dimension) with radius
 # equal to the given precision. In this area the solver exits with error code -1.
 
-library(solvergater)
-
 fake_simple <- function(qoi_file = "output_qoi",
                         jacobian_file = "output_jacobian",
                         cmd_args = commandArgs(TRUE)) {
@@ -110,6 +108,11 @@ power_grad <- function(x) {
     stopifnot(is.numeric(k), k >= 1, k %% 1 == 0)
     k * x^(k - 1)
   }
+}
+
+# From utils.R
+write_matrix <- function(mat, file) {
+  write(t(mat), file = file, ncolumns = ncol(mat))
 }
 
 fake_simple()
