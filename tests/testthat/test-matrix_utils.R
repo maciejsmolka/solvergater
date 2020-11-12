@@ -1,0 +1,21 @@
+test_that("read_matrix() works", {
+  m <- matrix(1:6, ncol = 3)
+  tf <- tempfile()
+  write(t(m), file = tf, ncolumns = 3)
+  rm3 <- read_matrix(ncol = 3)
+  m3 <- rm3(tf)
+  expect_setequal(class(m3), c("matrix", "array"))
+  expect_equal(m, m3)
+  expect_equal(ncol(m3), 3)
+})
+
+test_that("write_matrix() works", {
+  m <- matrix(1:6, ncol = 3)
+  tf <- tempfile()
+  write_matrix(m, tf)
+  rm3 <- read_matrix(3)
+  m3 <- rm3(tf)
+  expect_setequal(class(m3), c("matrix", "array"))
+  expect_equal(m, m3)
+  expect_equal(ncol(m3), 3)
+})
