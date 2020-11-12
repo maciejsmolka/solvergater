@@ -14,8 +14,9 @@ objective_functions(solver, data, misfit_fn = lsq_misfit, ...)
 \item{misfit_fn}{function to compute misfit between \code{data} and result of
 simulation.}
 
-\item{...}{additional args passed to \code{\link[=run]{run()}}, note that some solvers can
-require some parameters, e.g. \code{shell_solver} requires \code{precision}.}
+\item{...}{additional args passed to \code{\link[=run]{run()}} or \code{\link[memoise:memoise]{memoise::memoise()}},
+note that some solvers can require some parameters, e.g. \code{shell_solver}
+requires \code{precision}.}
 }
 \value{
 List with one or two components:
@@ -28,7 +29,11 @@ Jacobian matrix.
 \description{
 Function factory producing functions for use in optimization. These are
 objective function and its gradient. They can be used, e.g., as parameters
-\code{fn} and \code{gr} of \code{\link[stats:optim]{stats::optim()}}.
+\code{fn} and \code{gr} of \code{\link[stats:optim]{stats::optim()}}. Note that the functions compute their
+values through \code{\link[=objective]{objective()}}, however, calls to the latter are
+\emph{memoised}, so actual solver should never be called twice for the same
+data (\code{x}). In particular, computing value and gradient for a given \code{x}
+requires only a single solver run.
 }
 \examples{
 s <- fake_simple_solver(4, 5)
@@ -39,4 +44,7 @@ solver_funs <- objective_functions(s, observed_data, precision = 30.0,
 silent = TRUE)
 solver_funs$value(x)
 solver_funs$gradient(x)
+}
+\seealso{
+\code{\link[memoise:memoise]{memoise::memoise()}}
 }

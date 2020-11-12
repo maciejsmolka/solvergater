@@ -2,19 +2,26 @@
 #'
 #' Function factory producing functions for use in optimization. These are
 #' objective function and its gradient. They can be used, e.g., as parameters
-#' `fn` and `gr` of [stats::optim()].
+#' `fn` and `gr` of [stats::optim()]. Note that the functions compute their
+#' values through [objective()], however, calls to the latter are
+#' *memoised*, so actual solver should never be called twice for the same
+#' data (`x`). In particular, computing value and gradient for a given `x`
+#' requires only a single solver run.
 #'
 #' @param solver object of class `solver`.
 #' @param data observed ('exact') data.
 #' @param misfit_fn function to compute misfit between `data` and result of
 #' simulation.
-#' @param ... additional args passed to [run()], note that some solvers can
-#' require some parameters, e.g. `shell_solver` requires `precision`.
+#' @param ... additional args passed to [run()] or [memoise::memoise()],
+#' note that some solvers can require some parameters, e.g. `shell_solver`
+#' requires `precision`.
 #'
 #' @return List with one or two components:
 #' * `value` objective value function,
 #' * `gradient` objective gradient function, missing if solver does not compute
 #' Jacobian matrix.
+#'
+#' @seealso [memoise::memoise()]
 #'
 #' @export
 #'
@@ -29,17 +36,27 @@
 #' solver_funs$gradient(x)
 objective_functions <- function(solver, data, misfit_fn = lsq_misfit, ...) {
   solver_obj <- objective(solver, data, misfit_fn = misfit_fn, ...)
+  mem_solver_obj <- do_memoise(solver_obj, ...)
   value <- function(x) {
-    solver_obj(x)$value
+    mem_solver_obj(x)$value
   }
   result <- list(value = value)
   if (provides_jacobian(solver)) {
     gradient <- function(x) {
-      solver_obj(x)$gradient
+      mem_solver_obj(x)$gradient
     }
     result$gradient <- gradient
   }
   result
+}
+
+do_memoise <- function(f, ...) {
+  arg_names <- names(formals(memoise::memoise))
+  arg_names <- arg_names[!(arg_names %in% c("f", "..."))]
+  largs <- list(...)
+  largs <- largs[names(largs) %in% arg_names | names(largs) == ""]
+  largs$f <- f
+  do.call(memoise::memoise, largs)
 }
 
 #' Solver objective

@@ -21,3 +21,5 @@ RoxygenNote: 7.1.1
 Suggests: 
     testthat,
     covr
+Imports: 
+    memoise
