@@ -11,10 +11,11 @@ objective_functions(solver, data, misfit_fn = lsq_misfit, ...)
 
 \item{data}{observed ('exact') data.}
 
-\item{misfit_fn}{function to compute misfit between \code{data} and result of simulation.}
+\item{misfit_fn}{function to compute misfit between \code{data} and result of
+simulation.}
 
-\item{...}{additional args passed to \code{\link[=run]{run()}}, note that some solvers can require
-some parameters, e.g. \code{shell_solver} requires \code{precision}.}
+\item{...}{additional args passed to \code{\link[=run]{run()}}, note that some solvers can
+require some parameters, e.g. \code{shell_solver} requires \code{precision}.}
 }
 \value{
 List with one or two components:
@@ -31,9 +32,11 @@ objective function and its gradient. They can be used, e.g., as parameters
 }
 \examples{
 s <- fake_simple_solver(4, 5)
-observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)$qoi
+result <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)
+observed_data <- result$qoi
 x <- c(10.5, 9.44, 10.21, 8.14)
-solver_funs <- objective_functions(s, observed_data, precision = 30.0, silent = TRUE)
+solver_funs <- objective_functions(s, observed_data, precision = 30.0,
+silent = TRUE)
 solver_funs$value(x)
 solver_funs$gradient(x)
 }

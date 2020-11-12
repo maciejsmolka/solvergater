@@ -11,8 +11,8 @@ r_solver(
 )
 }
 \arguments{
-\item{qoi}{function to act as the quantity of interest (should return length-one
-vector)}
+\item{qoi}{function to act as the quantity of interest
+(should return scalar)}
 
 \item{jacobian}{function to act as the Jacobian matrix for the quantity of
 interest (should return vector
@@ -26,8 +26,8 @@ An object of classes \code{r_solver} and \code{solver}
 }
 \description{
 (Mock) gateway to solver that does not perform any external calls
-and computes the quantity of interest and its jacobian using provided functions.
-Provided mainly for testing purposes.
+and computes the quantity of interest and its jacobian using provided
+functions. Provided mainly for testing purposes.
 }
 \examples{
 s <- r_solver(qoi = function(x) sum(x^2), jacobian = function(x) 2 * x)

@@ -9,8 +9,8 @@ lsq_misfit(x, data, jacobian = NULL)
 \arguments{
 \item{x}{numeric or complex vector, computed (simulated) data.}
 
-\item{data}{numeric or complex vector, observed data, must have the same length
-as \code{x} (this is the number of quantities of interest).}
+\item{data}{numeric or complex vector, observed data, must have the same
+length as \code{x} (this is the number of quantities of interest).}
 
 \item{jacobian}{numeric or complex matrix, can be \code{NULL}, its number of rows
 must equal the length

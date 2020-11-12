@@ -30,7 +30,8 @@ run(solver, x, ...)
 
 \item{...}{additional arguments passed to other functions}
 
-\item{precision}{positive numeric scalar, expected solver accuracy (if applicable)}
+\item{precision}{positive numeric scalar, expected solver accuracy
+(if applicable)}
 
 \item{ignore.stdout}{logical, if not \code{NULL} overrides default setting in
 \code{shell_solver} object}
@@ -38,20 +39,20 @@ run(solver, x, ...)
 \item{ignore.stderr}{logical, if not \code{NULL} overrides default setting in
 \code{shell_solver} object}
 
-\item{silent}{logical, suppress diagnostic messages (not warnings), \code{TRUE} forces
-\code{ignore.stdout = TRUE} and \code{ignore.stderr = TRUE}}
+\item{silent}{logical, suppress diagnostic messages (not warnings), \code{TRUE}
+forces \code{ignore.stdout = TRUE} and \code{ignore.stderr = TRUE}}
 }
 \value{
 List with components:
 \itemize{
-\item \code{qoi} quantity of interest (QOI) at \code{x}, default implementation returns \code{NA};
+\item \code{qoi} QOI value at \code{x}, default implementation returns \code{NA};
 \item \code{jacobian} QOI Jacobian matrix at \code{x}, default implementation returns \code{NA},
 \code{NA} is also returned if the solver does not provide Jacobian info.
 }
 }
 \description{
-Runs the solver executable and extracts the quantity of interest and its
-Jacobian matrix (if available).
+Runs the solver executable and extracts the quantity of interest (QOI)
+and its Jacobian matrix (if available).
 }
 \section{Methods (by class)}{
 \itemize{
@@ -61,8 +62,8 @@ Jacobian matrix (if available).
 \item \code{r_solver}: Computes output using provided functions.
 
 \item \code{shell_solver}: Runs solver executable and reads values from output
-file(s). If solver process exits with non-zero status code, a warning is issued
-and list of \code{NA}'s is returned.
+file(s). If solver process exits with non-zero status code, a warning is
+issued and list of \code{NA}'s is returned.
 }}
 
 \examples{

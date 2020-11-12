@@ -21,7 +21,7 @@
 #' @examples
 #' s <- fake_simple_solver(4, 5)
 #' result <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)
-#' observer_data <- result$qoi
+#' observed_data <- result$qoi
 #' x <- c(10.5, 9.44, 10.21, 8.14)
 #' solver_funs <- objective_functions(s, observed_data, precision = 30.0,
 #' silent = TRUE)

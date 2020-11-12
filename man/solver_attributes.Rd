@@ -19,7 +19,8 @@ nparams(solver) <- value
 \item{value}{numeric scalar, can be \code{NULL}}
 }
 \description{
-Functions to get and set values of the most useful attributes of \code{solver} objects.
+Functions to get and set values of the most useful attributes of \code{solver}
+objects.
 }
 \examples{
 s <- r_solver(nparams = 10)

@@ -12,8 +12,8 @@ write_matrix(mat, file)
 \item{file}{file to write to}
 }
 \description{
-For a matrix with N columns, \code{write_matrix()} and \code{read_matrix(N)} are thought as
-mutual inverse.
+For a matrix with N columns, \code{write_matrix()} and \code{read_matrix(N)} are
+thought to be mutual inverse.
 }
 \examples{
 m <- matrix(1:6, ncol = 3)

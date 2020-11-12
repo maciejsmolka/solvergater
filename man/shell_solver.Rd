@@ -22,23 +22,23 @@ shell_solver(
 
 \item{nparams}{numeric, number of parameters, must be provided.}
 
-\item{qoi_file}{name of file containing the computed quantity of interest, can
-be absolute or relative to \code{wd}, cannot be \code{NULL}.}
+\item{qoi_file}{name of file containing the computed quantity of interest,
+may be absolute or relative to \code{wd}, cannot be \code{NULL}.}
 
 \item{jacobian_file}{name of file containing the computed Jacobian matrix
 of quantity of interest,
-can be absolute or relative to \code{wd}, \code{NULL} indicates that the solver does not
-provide gradient info.}
+can be absolute or relative to \code{wd}, \code{NULL} indicates that the solver
+does not provide gradient info.}
 
 \item{qoi_read_fn}{function reading the quantity of interest from file.}
 
 \item{jacobian_read_fn}{function reading the Jacobian matrix from file.}
 
-\item{arg_combine_fn}{function producing appropriate length-1 character vector
+\item{arg_combine_fn}{function producing appropriate numeric scalar
 from point and precision for solver command line}
 
-\item{wd}{character, working directory, i.e. directory where actual solver exec
-has to be run, when \code{NULL} current working directory will be used}
+\item{wd}{character, working directory, i.e. directory where actual solver
+exec has to be run, when \code{NULL} current working directory will be used}
 
 \item{ignore.stdout}{logical, should solver STDOUT be ignored?}
 
@@ -54,7 +54,8 @@ parameters in output text files.
 }
 \examples{
 rscript_path <- file.path(R.home(), "bin", "Rscript")
-solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
+solver_path <-
+  file.path(find.package("solvergater"), "exec", "fake_simple.R")
 nparams <- 2
 nqoi <- 5
 solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)

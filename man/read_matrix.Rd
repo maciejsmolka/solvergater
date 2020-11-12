@@ -13,8 +13,8 @@ read_matrix(ncol)
 function with 1 argument: \code{file}
 }
 \description{
-A function factory to read matrix with given number of columns from a file. The
-matrix is read row-wise (with \code{byrow = TRUE}).
+A function factory to read matrix with given number of columns from a file.
+The matrix is read row-wise (with \code{byrow = TRUE}).
 }
 \examples{
 m <- matrix(1:6, ncol = 3)
