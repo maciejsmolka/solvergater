@@ -1,6 +1,7 @@
 #' Solver attribute accessors
 #'
-#' Functions to get and set values of the most useful attributes of `solver` objects.
+#' Functions to get and set values of the most useful attributes of `solver`
+#' objects.
 #'
 #' @name solver_attributes
 #' @param solver object of class `solver`
@@ -28,9 +29,9 @@ nparams <- function(solver) {
 
 #' @rdname solver_attributes
 #' @export
-'nparams<-' <- function(solver, value) {
+"nparams<-" <- function(solver, value) {
   stopifnot(is.numeric(value) | is.null(value))
-  'attr<-'(solver, "nparams", value)
+  "attr<-"(solver, "nparams", value)
 }
 
 # solver class constructor

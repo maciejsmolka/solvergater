@@ -1,14 +1,14 @@
 #' Run the solver
 #'
-#' Runs the solver executable and extracts the quantity of interest and its
-#' Jacobian matrix (if available).
+#' Runs the solver executable and extracts the quantity of interest (QOI)
+#' and its Jacobian matrix (if available).
 #'
 #' @param solver solver object
 #' @param x numeric vector representing the point to compute objective at
 #' @param ... additional arguments passed to other functions
 #'
 #' @return List with components:
-#' * `qoi` quantity of interest (QOI) at `x`, default implementation returns `NA`;
+#' * `qoi` QOI value at `x`, default implementation returns `NA`;
 #' * `jacobian` QOI Jacobian matrix at `x`, default implementation returns `NA`,
 #' `NA` is also returned if the solver does not provide Jacobian info.
 #'
@@ -50,16 +50,17 @@ run.r_solver <- function(solver, x, ...) {
 }
 
 #' @describeIn run Runs solver executable and reads values from output
-#' file(s). If solver process exits with non-zero status code, a warning is issued
-#' and list of `NA`'s is returned.
+#' file(s). If solver process exits with non-zero status code, a warning is
+#' issued and list of `NA`'s is returned.
 #'
-#' @param precision positive numeric scalar, expected solver accuracy (if applicable)
+#' @param precision positive numeric scalar, expected solver accuracy
+#' (if applicable)
 #' @param ignore.stdout logical, if not `NULL` overrides default setting in
 #' `shell_solver` object
 #' @param ignore.stderr logical, if not `NULL` overrides default setting in
 #' `shell_solver` object
-#' @param silent logical, suppress diagnostic messages (not warnings), `TRUE` forces
-#' `ignore.stdout = TRUE` and `ignore.stderr = TRUE`
+#' @param silent logical, suppress diagnostic messages (not warnings), `TRUE`
+#' forces `ignore.stdout = TRUE` and `ignore.stderr = TRUE`
 #'
 #' @export
 run.shell_solver <- function(solver, x, precision, ignore.stdout = NULL,
@@ -99,7 +100,8 @@ do_run <- function(solver, cmd, ignore.stdout, ignore.stderr, silent) {
     s_message("Entering ", solver$wd, silent = silent)
     setwd(solver$wd)
   }
-  status <- system(cmd, ignore.stdout = ignore.stdout, ignore.stderr = ignore.stderr)
+  status <- system(cmd, ignore.stdout = ignore.stdout,
+                   ignore.stderr = ignore.stderr)
   if (status != 0) {
     return(list(status = status, qoi = NA, jacobian = NA))
   }

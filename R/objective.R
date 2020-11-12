@@ -6,9 +6,10 @@
 #'
 #' @param solver object of class `solver`.
 #' @param data observed ('exact') data.
-#' @param misfit_fn function to compute misfit between `data` and result of simulation.
-#' @param ... additional args passed to [run()], note that some solvers can require
-#' some parameters, e.g. `shell_solver` requires `precision`.
+#' @param misfit_fn function to compute misfit between `data` and result of
+#' simulation.
+#' @param ... additional args passed to [run()], note that some solvers can
+#' require some parameters, e.g. `shell_solver` requires `precision`.
 #'
 #' @return List with one or two components:
 #' * `value` objective value function,
@@ -19,9 +20,11 @@
 #'
 #' @examples
 #' s <- fake_simple_solver(4, 5)
-#' observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)$qoi
+#' result <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)
+#' observer_data <- result$qoi
 #' x <- c(10.5, 9.44, 10.21, 8.14)
-#' solver_funs <- objective_functions(s, observed_data, precision = 30.0, silent = TRUE)
+#' solver_funs <- objective_functions(s, observed_data, precision = 30.0,
+#' silent = TRUE)
 #' solver_funs$value(x)
 #' solver_funs$gradient(x)
 objective_functions <- function(solver, data, misfit_fn = lsq_misfit, ...) {
@@ -46,9 +49,10 @@ objective_functions <- function(solver, data, misfit_fn = lsq_misfit, ...) {
 #'
 #' @param solver object of class `solver`.
 #' @param data observed ('exact') data.
-#' @param misfit_fn function to compute misfit between `data` and result of simulation.
-#' @param ... additional args passed to [run()], note that some solvers can require
-#' some parameters, e.g. `shell_solver` requires `precision`.
+#' @param misfit_fn function to compute misfit between `data` and result of
+#' simulation.
+#' @param ... additional args passed to [run()], note that some solvers can
+#' require some parameters, e.g. `shell_solver` requires `precision`.
 #'
 #' @return Function with numeric parameter `x` returning list with one or two
 #' components:
@@ -60,7 +64,8 @@ objective_functions <- function(solver, data, misfit_fn = lsq_misfit, ...) {
 #'
 #' @examples
 #' s <- fake_simple_solver(4, 5)
-#' observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)$qoi
+#' result <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)
+#' observed_data <- result$qoi
 #' x <- c(10.5, 9.44, 10.21, 8.14)
 #' solver_obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
 #' solver_obj(x)
@@ -80,8 +85,8 @@ objective <- function(solver, data, misfit_fn = lsq_misfit, ...) {
 #' computed by, e.g., solvers based on adjoint state method.
 #'
 #' @param x numeric or complex vector, computed (simulated) data.
-#' @param data numeric or complex vector, observed data, must have the same length
-#' as `x` (this is the number of quantities of interest).
+#' @param data numeric or complex vector, observed data, must have the same
+#' length as `x` (this is the number of quantities of interest).
 #' @param jacobian numeric or complex matrix, can be `NULL`, its number of rows
 #' must equal the length
 #' of `x` and `data`, its number of columns is the number of parameters in

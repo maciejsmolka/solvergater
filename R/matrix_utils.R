@@ -1,7 +1,7 @@
 #' Read matrix from file
 #'
-#' A function factory to read matrix with given number of columns from a file. The
-#' matrix is read row-wise (with `byrow = TRUE`).
+#' A function factory to read matrix with given number of columns from a file.
+#' The matrix is read row-wise (with `byrow = TRUE`).
 #'
 #' @param ncol integer, expected number of columns, passed to [base::matrix()].
 #'
@@ -23,8 +23,8 @@ read_matrix <- function(ncol) {
 
 #' Write a matrix to a file
 #'
-#' For a matrix with N columns, `write_matrix()` and `read_matrix(N)` are thought as
-#' mutual inverse.
+#' For a matrix with N columns, `write_matrix()` and `read_matrix(N)` are
+#' thought to be mutual inverse.
 #'
 #' @seealso [read_matrix()]
 #'

@@ -6,18 +6,18 @@
 #'
 #' @param cmd command to run the solver executable.
 #' @param nparams numeric, number of parameters, must be provided.
-#' @param qoi_file name of file containing the computed quantity of interest, can
-#' be absolute or relative to `wd`, cannot be `NULL`.
+#' @param qoi_file name of file containing the computed quantity of interest,
+#' may be absolute or relative to `wd`, cannot be `NULL`.
 #' @param jacobian_file name of file containing the computed Jacobian matrix
 #' of quantity of interest,
-#' can be absolute or relative to `wd`, `NULL` indicates that the solver does not
-#' provide gradient info.
+#' can be absolute or relative to `wd`, `NULL` indicates that the solver
+#' does not provide gradient info.
 #' @param qoi_read_fn function reading the quantity of interest from file.
 #' @param jacobian_read_fn function reading the Jacobian matrix from file.
-#' @param arg_combine_fn function producing appropriate length-1 character vector
+#' @param arg_combine_fn function producing appropriate numeric scalar
 #' from point and precision for solver command line
-#' @param wd character, working directory, i.e. directory where actual solver exec
-#' has to be run, when `NULL` current working directory will be used
+#' @param wd character, working directory, i.e. directory where actual solver
+#' exec has to be run, when `NULL` current working directory will be used
 #' @param ignore.stdout logical, should solver STDOUT be ignored?
 #' @param ignore.stderr logical, should solver STDERR be ignored?
 #'
@@ -27,7 +27,8 @@
 #'
 #' @examples
 #' rscript_path <- file.path(R.home(), "bin", "Rscript")
-#' solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
+#' solver_path <-
+#'   file.path(find.package("solvergater"), "exec", "fake_simple.R")
 #' nparams <- 2
 #' nqoi <- 5
 #' solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
@@ -41,7 +42,8 @@ shell_solver <- function(
   jacobian_file = NULL,
   qoi_read_fn = function(file) scan(file, quiet = TRUE),
   jacobian_read_fn = if (!is.null(jacobian_file)) read_matrix(nparams),
-  arg_combine_fn = function(x, precision) paste(c(x, precision), collapse = " "),
+  arg_combine_fn =
+    function(x, precision) paste(c(x, precision), collapse = " "),
   wd = NULL,
   ignore.stdout = TRUE,
   ignore.stderr = TRUE
@@ -83,11 +85,13 @@ validate_shell_solver <- function(x) {
   }
   if (!is.null(nparams)) {
     if (!all(!is.na(nparams) & nparams > 0)) {
-      stop("Number of parameters must be NULL or positive numeric", call. = FALSE)
+      stop("Number of parameters must be NULL or positive numeric",
+           call. = FALSE)
     }
   }
   if (!is.null(x$wd) && !dir.exists(x$wd)) {
-    stop("Working directory must exist or be explicitly set to NULL", call. = FALSE)
+    stop("Working directory must exist or be explicitly set to NULL",
+         call. = FALSE)
   }
   x
 }
