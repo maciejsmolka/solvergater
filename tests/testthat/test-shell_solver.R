@@ -40,7 +40,11 @@ test_that("run() handles solver error", {
   expect_true(is.na(obj$jacobian))
 })
 
-test_that("Setting number of params works for shell_solver", {
-  solver <- shell_solver("", "", nparams = 10)
+test_that("Invalid parameter values are spotted", {
+  expect_error(shell_solver("", nparams = NULL, qoi_file = ""))
+  expect_error(shell_solver("", nparams = -2, qoi_file = ""))
+  expect_error(shell_solver("", nparams = 2, qoi_file = NULL))
+  expect_error(shell_solver(cmd = NULL, nparams = 1, qoi_file = ""))
+  solver <- shell_solver("", nparams = 10, qoi_file = "")
   expect_error(run(solver, c(1, 2), 2))
 })
