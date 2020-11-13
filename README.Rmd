@@ -81,15 +81,27 @@ an objective function returning value and gradient at the same time.
 
 ```{r objective}
 x <- c(10.5, 9.44, 10.21, 8.14)
-solver_obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
-solver_obj(x)
+obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
+obj(x)
 ```
 
 Second, we can obtain two separate functions for value and gradient. This form is
-intended for the use in [stats::optim()].
+intended for the use in [`stats::optim()`](https://rdrr.io/r/stats/optim.html).
 
 ```{r optimization}
 solver_obj <- objective_functions(s, observed_data, precision = 30.0, silent = TRUE)
 solver_obj$value(x)
 solver_obj$gradient(x)
+```
+
+`objective_functions()` [memoises](https://memoise.r-lib.org/) internal calls to an 
+actual solver, so in the above example only a single solver run is performed.
+
+```{r optimizationMemoise}
+x1 <- c(0, 20, 0, 20)
+solver_obj <- objective_functions(s, observed_data, precision = 2.0, silent = TRUE)
+value_time <- system.time(solver_obj$value(x1))
+gradient_time <- system.time(solver_obj$gradient(x1))
+value_time
+gradient_time
 ```

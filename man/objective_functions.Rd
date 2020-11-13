@@ -33,7 +33,9 @@ objective function and its gradient. They can be used, e.g., as parameters
 values through \code{\link[=objective]{objective()}}, however, calls to the latter are
 \emph{memoised}, so actual solver should never be called twice for the same
 data (\code{x}). In particular, computing value and gradient for a given \code{x}
-requires only a single solver run.
+requires only a single solver run. To obtain non-memoised functions
+use \code{\link[=make_functions]{make_functions()}} composed with \code{\link[=objective]{objective()}} (see example in
+\code{\link[=make_functions]{make_functions()}}).
 }
 \examples{
 s <- fake_simple_solver(4, 5)

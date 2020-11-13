@@ -6,7 +6,9 @@
 #' values through [objective()], however, calls to the latter are
 #' *memoised*, so actual solver should never be called twice for the same
 #' data (`x`). In particular, computing value and gradient for a given `x`
-#' requires only a single solver run.
+#' requires only a single solver run. To obtain non-memoised functions
+#' use [make_functions()] composed with [objective()] (see example in
+#' [make_functions()]).
 #'
 #' @param solver object of class `solver`.
 #' @param data observed ('exact') data.
@@ -35,28 +37,9 @@
 #' solver_funs$value(x)
 #' solver_funs$gradient(x)
 objective_functions <- function(solver, data, misfit_fn = lsq_misfit, ...) {
-  solver_obj <- objective(solver, data, misfit_fn = misfit_fn, ...)
-  mem_solver_obj <- do_memoise(solver_obj, ...)
-  value <- function(x) {
-    mem_solver_obj(x)$value
-  }
-  result <- list(value = value)
-  if (provides_jacobian(solver)) {
-    gradient <- function(x) {
-      mem_solver_obj(x)$gradient
-    }
-    result$gradient <- gradient
-  }
-  result
-}
-
-do_memoise <- function(f, ...) {
-  arg_names <- names(formals(memoise::memoise))
-  arg_names <- arg_names[!(arg_names %in% c("f", "..."))]
-  largs <- list(...)
-  largs <- largs[names(largs) %in% arg_names | names(largs) == ""]
-  largs$f <- f
-  do.call(memoise::memoise, largs)
+  obj <- objective(solver, data, misfit_fn = misfit_fn, ...)
+  mem_obj <- do_memoise(obj, ...)
+  make_functions(mem_obj, provides_gradient = differentiable(obj))
 }
 
 #' Solver objective
@@ -87,10 +70,56 @@ do_memoise <- function(f, ...) {
 #' solver_obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
 #' solver_obj(x)
 objective <- function(solver, data, misfit_fn = lsq_misfit, ...) {
-  function(x) {
+  f <- function(x) {
     computed <- run(solver, x, ...)
     misfit_fn(computed$qoi, data, jacobian = computed$jacobian)
   }
+  attr(f, "differentiable") <- provides_jacobian(solver)
+  f
+}
+
+#' Make two functions out of objective
+#'
+#' Separates function created with [objective()] into value function
+#' and gradient function. No memoisation is done here.
+#'
+#' @param objective objective function, as created with [objective()].
+#' @param provides_gradient logical, does `objective` prodive gradient?
+#'
+#' @return same as in [objective_functions()].
+#'
+#' @export
+#'
+#' @examples
+#' s <- fake_simple_solver(4, 5)
+#' result <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)
+#' observed_data <- result$qoi
+#' x <- c(10.5, 9.44, 10.21, 8.14)
+#' obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
+#' solver_funs <- make_functions(obj)
+#' solver_funs$value(x)
+#' solver_funs$gradient(x)
+make_functions <- function(objective, provides_gradient = TRUE) {
+  val <- function(x) {
+    objective(x)$value
+  }
+  result <- list(value = val)
+  if (provides_gradient) {
+    grad <- function(x) {
+      objective(x)$gradient
+    }
+    result$gradient <- grad
+  }
+  result
+}
+
+#' Is this function differentiable?
+#'
+#' @param f function object
+#'
+#' @export
+differentiable <- function(f) {
+  attr(f, "differentiable")
 }
 
 #' Least square misfit
@@ -130,4 +159,14 @@ lsq_misfit <- function(x, data, jacobian = NULL) {
     result$gradient <- as.vector(gradient)
   }
   result
+}
+
+do_memoise <- function(f, ...) {
+  arg_names <- names(formals(memoise::memoise))
+  arg_names <- arg_names[!(arg_names %in% c("f", "..."))]
+  largs <- list(...)
+  largs <- largs[names(largs) %in% arg_names | names(largs) == ""]
+  largs$f <- f
+  largs$envir <- environment(f)
+  do.call(memoise::memoise, largs)
 }

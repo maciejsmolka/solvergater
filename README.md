@@ -90,8 +90,8 @@ at the same time.
 
 ``` r
 x <- c(10.5, 9.44, 10.21, 8.14)
-solver_obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
-solver_obj(x)
+obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
+obj(x)
 #> $value
 #> [1] 2594156034
 #> 
@@ -100,7 +100,8 @@ solver_obj(x)
 ```
 
 Second, we can obtain two separate functions for value and gradient.
-This form is intended for the use in \[stats::optim()\].
+This form is intended for the use in
+[`stats::optim()`](https://rdrr.io/r/stats/optim.html).
 
 ``` r
 solver_obj <- objective_functions(s, observed_data, precision = 30.0, silent = TRUE)
@@ -108,4 +109,21 @@ solver_obj$value(x)
 #> [1] 2594156034
 solver_obj$gradient(x)
 #> [1] -6208209534 -4059190749 -5551351184 -2246937119
+```
+
+`objective_functions()` [memoises](https://memoise.r-lib.org/) internal
+calls to an actual solver, so in the above example only a single solver
+run is performed.
+
+``` r
+x1 <- c(0, 20, 0, 20)
+solver_obj <- objective_functions(s, observed_data, precision = 2.0, silent = TRUE)
+value_time <- system.time(solver_obj$value(x1))
+gradient_time <- system.time(solver_obj$gradient(x1))
+value_time
+#>    user  system elapsed 
+#>   0.309   0.083   5.409
+gradient_time
+#>    user  system elapsed 
+#>   0.001   0.001   0.001
 ```
