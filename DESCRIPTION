@@ -6,7 +6,7 @@ Authors@R:
            family = "Smołka",
            role = c("aut", "cre"),
            email = "smolka@agh.edu.pl",
-           comment = c(ORCID = "https://orcid.org/0000-0002-3386-0555"))
+           comment = c(ORCID = "0000-0002-3386-0555"))
 Description: 
     It is a common task to solve an optimization problem when the objective
     is computed using an external application such as a finite-element-method partial
