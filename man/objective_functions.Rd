@@ -20,10 +20,10 @@ requires \code{precision}.}
 }
 \value{
 List with one or two components:
-\itemize{
-\item \code{value} objective value function,
-\item \code{gradient} objective gradient function, missing if solver does not compute
-Jacobian matrix.
+\describe{
+\item{\code{value}}{objective value function,}
+\item{\code{gradient}}{objective gradient function, missing if solver does not compute
+Jacobian matrix.}
 }
 }
 \description{

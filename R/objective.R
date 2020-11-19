@@ -19,9 +19,11 @@
 #' requires `precision`.
 #'
 #' @return List with one or two components:
-#' * `value` objective value function,
-#' * `gradient` objective gradient function, missing if solver does not compute
-#' Jacobian matrix.
+#' \describe{
+#' \item{`value`}{objective value function,}
+#' \item{`gradient`}{objective gradient function, missing if solver does not compute
+#' Jacobian matrix.}
+#' }
 #'
 #' @seealso [memoise::memoise()]
 #'

@@ -8,9 +8,12 @@
 #' @param ... additional arguments passed to other functions
 #'
 #' @return List with components:
-#' * `qoi` QOI value at `x`, default implementation returns `NA`;
-#' * `jacobian` QOI Jacobian matrix at `x`, default implementation returns `NA`,
-#' `NA` is also returned if the solver does not provide Jacobian info.
+#' \describe{
+#' \item{`qoi`}{QOI value at `x`, default implementation returns `NA`;}
+#' \item{`jacobian`}{QOI Jacobian matrix at `x`, default implementation
+#' returns `NA`, `NA` is also returned if the solver does not provide Jacobian
+#' info.}
+#' }
 #'
 #' @export
 #'

@@ -44,10 +44,11 @@ forces \code{ignore.stdout = TRUE} and \code{ignore.stderr = TRUE}}
 }
 \value{
 List with components:
-\itemize{
-\item \code{qoi} QOI value at \code{x}, default implementation returns \code{NA};
-\item \code{jacobian} QOI Jacobian matrix at \code{x}, default implementation returns \code{NA},
-\code{NA} is also returned if the solver does not provide Jacobian info.
+\describe{
+\item{\code{qoi}}{QOI value at \code{x}, default implementation returns \code{NA};}
+\item{\code{jacobian}}{QOI Jacobian matrix at \code{x}, default implementation
+returns \code{NA}, \code{NA} is also returned if the solver does not provide Jacobian
+info.}
 }
 }
 \description{
