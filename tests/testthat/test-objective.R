@@ -27,3 +27,29 @@ test_that("objective_functions() and make_functions() return coherent results",
   expect_equal(of_funs$value(x), mf_funs$value(x))
   expect_equal(of_funs$gradient(x), mf_funs$gradient(x))
 })
+
+test_that("objective_functions() does not make unnecessary calls", {
+ npars <- 5
+ nqoi <- 10
+ solver <- fake_simple_solver(npars, nqoi)
+ solver_output <- run(solver, rep(1, npars), precision = 100, silent = TRUE)
+ exact_data <- solver_output$qoi
+ of_funs <- objective_functions(solver, exact_data, precision = 100,
+                               silent = TRUE)
+ x <- rep(2.5, npars)
+ runs_before_of <- run_count(solver)
+ of_funs$value(x)
+ of_funs$gradient(x)
+ runs_after_of <- run_count(solver)
+ obj <- objective(solver, exact_data, precision = 100, silent = TRUE)
+ mf_funs <- make_functions(obj)
+ runs_before_mf <- run_count(solver)
+ mf_funs$value(x)
+ mf_funs$gradient(x)
+ runs_after_mf <- run_count(solver)
+ runs_delta_of <- runs_after_of - runs_before_of
+ runs_delta_mf <- runs_after_mf - runs_before_mf
+ expect_equal(runs_delta_of, 1)
+ expect_gt(runs_delta_mf, runs_delta_of)
+ expect_equal(runs_delta_mf, runs_delta_of + 1)
+})

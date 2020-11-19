@@ -36,6 +36,7 @@ run.solver <- function(solver, x, ...) {
     stop("Dimension of 'x' must equal number of parameters in 'solver'",
          call. = FALSE)
   }
+  solver$add_run()
   NextMethod("run")
 }
 
