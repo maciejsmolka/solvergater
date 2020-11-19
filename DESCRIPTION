@@ -14,6 +14,9 @@ Description:
     writes its output to a number of files. This package provides a simple R 
     gateway to such external apps.
 License: Apache License (>= 2.0)
+URL: 
+    https://maciejsmolka.github.io/solvergater, 
+    https://github.com/maciejsmolka/solvergater
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
