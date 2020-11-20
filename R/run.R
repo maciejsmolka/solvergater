@@ -100,9 +100,8 @@ run.shell_solver <- function(solver, x, precision, ignore.stdout = NULL,
 # Run given command in given directory
 do_run <- function(solver, cmd, ignore.stdout, ignore.stderr, silent) {
   if (!is.null(solver$wd)) {
-    old_wd <- getwd()
     s_message("Entering ", solver$wd, silent = silent)
-    setwd(solver$wd)
+    withr::local_dir(solver$wd)
   }
   status <- system(cmd, ignore.stdout = ignore.stdout,
                    ignore.stderr = ignore.stderr)
@@ -111,10 +110,6 @@ do_run <- function(solver, cmd, ignore.stdout, ignore.stderr, silent) {
   }
   qoi <- read_qoi(solver)
   jac <- read_jacobian(solver)
-  if (!is.null(solver$wd)) {
-    s_message("Exiting ", solver$wd, silent = silent)
-    setwd(old_wd)
-  }
   list(status = 0, qoi = qoi, jacobian = jac)
 }
 

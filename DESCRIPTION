@@ -25,4 +25,5 @@ Suggests:
     testthat,
     covr
 Imports: 
-    memoise
+    memoise,
+    withr
