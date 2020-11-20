@@ -76,7 +76,7 @@ computed by, e.g., solvers based on adjoint state method." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">solvergater</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -93,7 +93,12 @@ computed by, e.g., solvers based on adjoint state method." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/maciejsmolka/solvergater/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -108,7 +113,7 @@ computed by, e.g., solvers based on adjoint state method." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Least square misfit</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/maciejsmolka/solvergater/blob/master/R/objective.R'><code>R/objective.R</code></a></small>
     <div class="hidden name"><code>lsq_misfit.Rd</code></div>
     </div>
 
@@ -145,11 +150,12 @@ considered problem.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List with one or two components:</p><ul>
-<li><p><code>value</code> numeric scalar;</p></li>
-<li><p><code>gradient</code> numeric vector with length equal to <code><a href='https://rdrr.io/r/base/nrow.html'>ncol(jacobian)</a></code>, missing
-if <code>jacobian</code> is <code>NULL</code>.</p></li>
-</ul>
+    <p>List with one or two components:</p><dl>
+<dt><code>value</code></dt><dd><p>numeric scalar</p></dd>;
+<dt><code>gradient</code></dt><dd><p>numeric vector with length equal to <code><a href='https://rdrr.io/r/base/nrow.html'>ncol(jacobian)</a></code>, missing
+if <code>jacobian</code> is <code>NULL</code>.</p></dd>
+
+</dl>
 
 
   </div>

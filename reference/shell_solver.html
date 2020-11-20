@@ -74,7 +74,7 @@ parameters in output text files." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">solvergater</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -91,7 +91,12 @@ parameters in output text files." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/maciejsmolka/solvergater/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -106,7 +111,7 @@ parameters in output text files." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Gateway to solver run from command line</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/maciejsmolka/solvergater/blob/master/R/shell_solver.R'><code>R/shell_solver.R</code></a></small>
     <div class="hidden name"><code>shell_solver.Rd</code></div>
     </div>
 
@@ -194,7 +199,7 @@ exec has to be run, when <code>NULL</code> current working directory will be use
 <span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>shell_solver</span><span class='op'>(</span><span class='va'>solver_cmd</span>, nparams <span class='op'>=</span> <span class='va'>nparams</span>, qoi_file <span class='op'>=</span> <span class='st'>"output_qoi"</span>,
 jacobian_file <span class='op'>=</span> <span class='st'>"output_jacobian"</span>, wd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='run.html'>run</a></span><span class='op'>(</span><span class='va'>s</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='fl'>5</span><span class='op'>)</span>, <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Users/runner/work/_temp/Library/solvergater/exec/fake_simple.R 2 5 20 5 10</span></div><div class='output co'>#&gt; <span class='message'>Entering /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpCmnGR0</span></div><div class='output co'>#&gt; <span class='message'>Exiting /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpCmnGR0</span></div><div class='output co'>#&gt; <span class='message'>Solver exited normally</span></div><div class='output co'>#&gt; $qoi
+</div><div class='output co'>#&gt; <span class='message'>Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Users/runner/work/_temp/Library/solvergater/exec/fake_simple.R 2 5 20 5 10</span></div><div class='output co'>#&gt; <span class='message'>Entering /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQGs36g</span></div><div class='output co'>#&gt; <span class='message'>Exiting /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQGs36g</span></div><div class='output co'>#&gt; <span class='message'>Solver exited normally</span></div><div class='output co'>#&gt; $qoi
 #&gt; [1]      25     425    8125  160625 3203125
 #&gt; 
 #&gt; $jacobian
