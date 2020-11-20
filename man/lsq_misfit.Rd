@@ -19,10 +19,10 @@ considered problem.}
 }
 \value{
 List with one or two components:
-\itemize{
-\item \code{value} numeric scalar;
-\item \code{gradient} numeric vector with length equal to \code{ncol(jacobian)}, missing
-if \code{jacobian} is \code{NULL}.
+\describe{
+\item{\code{value}}{numeric scalar};
+\item{\code{gradient}}{numeric vector with length equal to \code{ncol(jacobian)}, missing
+if \code{jacobian} is \code{NULL}.}
 }
 }
 \description{

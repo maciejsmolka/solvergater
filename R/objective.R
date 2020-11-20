@@ -74,7 +74,22 @@ objective_functions <- function(solver, data, misfit_fn = lsq_misfit, ...) {
 objective <- function(solver, data, misfit_fn = lsq_misfit, ...) {
   f <- function(x) {
     computed <- run(solver, x, ...)
-    misfit_fn(computed$qoi, data, jacobian = computed$jacobian)
+    if (any(is.na(computed$qoi))) {
+      result <- list(value = NA)
+      if (provides_jacobian(solver)) {
+        result$gradient <- NA
+      }
+    } else {
+      jac <- computed$jacobian
+      if (any(is.na(jac))) {
+        jac <- NULL
+      }
+      result <- misfit_fn(computed$qoi, data, jacobian = jac)
+      if (provides_jacobian(solver) && is.null(result$gradient)) {
+        result$gradient <- NA
+      }
+    }
+    result
   }
   attr(f, "differentiable") <- provides_jacobian(solver)
   f
@@ -141,9 +156,11 @@ differentiable <- function(f) {
 #' considered problem.
 #'
 #' @return List with one or two components:
-#' * `value` numeric scalar;
-#' * `gradient` numeric vector with length equal to `ncol(jacobian)`, missing
-#' if `jacobian` is `NULL`.
+#' \describe{
+#' \item{`value`}{numeric scalar};
+#' \item{`gradient`}{numeric vector with length equal to `ncol(jacobian)`, missing
+#' if `jacobian` is `NULL`.}
+#' }
 #'
 #' @export
 #'

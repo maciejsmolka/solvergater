@@ -53,3 +53,15 @@ test_that("objective_functions() does not make unnecessary calls", {
  expect_gt(runs_delta_mf, runs_delta_of)
  expect_equal(runs_delta_mf, runs_delta_of + 1)
 })
+
+test_that("objective() handles solver errors appropriately", {
+  npars <- 5
+  nqoi <- 8
+  solver <- fake_simple_solver(nparams = npars, nqoi = nqoi)
+  exact_data <- rep.int(0, nqoi)
+  obj <- objective(solver, exact_data, precision = 90, silent = TRUE)
+  x <- fs_faulty_x(npars)
+  expect_warning(result <- obj(x))
+  expect_true(is.na(result$value))
+  expect_true(is.na(result$gradient))
+})

@@ -24,3 +24,8 @@ fake_simple_solver <- function(nparams, nqoi, wd = tempdir(), ...) {
     wd = wd
     )
 }
+
+# x causing error in fake_simple.R, n is its length
+fs_faulty_x <- function(n) {
+  rep.int(1000, n)
+}

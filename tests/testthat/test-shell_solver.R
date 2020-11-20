@@ -1,6 +1,6 @@
 test_that("running external solver works", {
   x <- c(1.2, 3.5, 10.6, 0.1, -2.3)
-  precision <- 10
+  precision <- 90
   nparams <- length(x)
   nqoi <- 3
   rscript_path <- file.path(R.home(), "bin", "Rscript")
@@ -22,9 +22,9 @@ test_that("running external solver works", {
 })
 
 test_that("run() handles solver error", {
-  err_x <- rep(1000, 10) # Value synchronized with fake_simple.R script
-  precision <- 10
-  nparams <- length(err_x)
+  nparams <- 10
+  err_x <- fs_faulty_x(nparams)
+  precision <- 90
   nqoi <- 5
   rscript_path <- file.path(R.home(), "bin", "Rscript")
   solver_path <- file.path(find.package("solvergater"), "exec", "fake_simple.R")
@@ -33,7 +33,8 @@ test_that("run() handles solver error", {
     solver_cmd,
     nparams = nparams,
     qoi_file = "output_qoi",
-    jacobian_file = "output_jacobian"
+    jacobian_file = "output_jacobian",
+    wd = tempdir()
     )
   expect_warning(obj <- run(s, err_x, precision))
   expect_true(is.na(obj$qoi))
