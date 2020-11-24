@@ -17,6 +17,7 @@ License: Apache License (>= 2.0)
 URL: 
     https://maciejsmolka.github.io/solvergater, 
     https://github.com/maciejsmolka/solvergater
+BugReports: https://github.com/maciejsmolka/solvergater/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
