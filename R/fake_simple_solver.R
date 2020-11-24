@@ -1,4 +1,4 @@
-#' Gateway for `fake_simple.R` solver
+#' Gateway for `fake_simple.R` mock solver
 #'
 #' A helper to create `solver` object encapsulating calls to `fake_simple.R`.
 #'

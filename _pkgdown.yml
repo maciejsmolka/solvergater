@@ -1,0 +1,18 @@
+reference:
+- title: Solver handlers
+- contents:
+  - matches("solver")
+  - run
+  - matches("nparams")
+  - provides_jacobian
+  - run_count
+- title: Objective providers
+- contents:
+  - matches("objective")
+  - make_functions
+  - differentiable
+  - squared_error
+- title: Helpers
+- contents:
+  - matches("matrix")
+  - output_file

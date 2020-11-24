@@ -56,9 +56,11 @@ objective_functions <- function(solver, data, ...) {
 #'
 #' @return Function with numeric parameter `x` returning list with one or two
 #' components:
-#' * `value` numeric, objective value,
-#' * `gradient` numeric, objective gradient, missing if solver does not compute
-#' Jacobian matrix.
+#' \describe{
+#' \item{`value`}{numeric, objective value,}
+#' \item{`gradient`}{numeric, objective gradient, missing if solver does not compute
+#' Jacobian matrix.}
+#' }
 #'
 #' @export
 #'
@@ -155,7 +157,7 @@ differentiable <- function(f) {
 #'
 #' @return List with one or two components:
 #' \describe{
-#' \item{`value`}{numeric scalar};
+#' \item{`value`}{numeric scalar;}
 #' \item{`gradient`}{numeric vector with length equal to `ncol(jacobian)`, missing
 #' if `jacobian` is `NULL`.}
 #' }

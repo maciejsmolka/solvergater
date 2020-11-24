@@ -7,7 +7,7 @@
 run_count(solver)
 }
 \arguments{
-\item{solver, }{object of class \code{solver}}
+\item{solver}{object of class \code{solver}}
 }
 \description{
 Get the count of solver runs

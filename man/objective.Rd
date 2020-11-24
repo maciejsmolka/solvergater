@@ -20,10 +20,10 @@ require some parameters, e.g. \code{shell_solver} requires \code{precision}.}
 \value{
 Function with numeric parameter \code{x} returning list with one or two
 components:
-\itemize{
-\item \code{value} numeric, objective value,
-\item \code{gradient} numeric, objective gradient, missing if solver does not compute
-Jacobian matrix.
+\describe{
+\item{\code{value}}{numeric, objective value,}
+\item{\code{gradient}}{numeric, objective gradient, missing if solver does not compute
+Jacobian matrix.}
 }
 }
 \description{

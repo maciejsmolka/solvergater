@@ -2,7 +2,7 @@
 % Please edit documentation in R/fake_simple_solver.R
 \name{fake_simple_solver}
 \alias{fake_simple_solver}
-\title{Gateway for \code{fake_simple.R} solver}
+\title{Gateway for \code{fake_simple.R} mock solver}
 \usage{
 fake_simple_solver(nparams, nqoi, wd = tempdir(), ...)
 }

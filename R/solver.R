@@ -37,7 +37,7 @@ nparams <- function(solver) {
 
 #' Get the count of solver runs
 #'
-#' @param solver, object of class `solver`
+#' @param solver object of class `solver`
 #' @export
 run_count <- function(solver) {
   solver$run_count()
