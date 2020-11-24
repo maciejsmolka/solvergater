@@ -4,7 +4,7 @@
 \alias{objective}
 \title{Solver objective}
 \usage{
-objective(solver, data, misfit_fn = lsq_misfit, ...)
+objective(solver, data, misfit_fn = squared_error, ...)
 }
 \arguments{
 \item{solver}{object of class \code{solver}.}

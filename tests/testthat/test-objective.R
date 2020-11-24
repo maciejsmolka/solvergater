@@ -62,6 +62,6 @@ test_that("objective() handles solver errors appropriately", {
   obj <- objective(solver, exact_data, precision = 90, silent = TRUE)
   x <- fs_faulty_x(npars)
   expect_warning(result <- obj(x))
-  expect_true(is.na(result$value))
-  expect_true(is.na(result$gradient))
+  expect_equal(result$value, NA)
+  expect_equal(result$gradient, NA)
 })

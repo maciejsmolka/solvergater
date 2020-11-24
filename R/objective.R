@@ -12,9 +12,7 @@
 #'
 #' @param solver object of class `solver`.
 #' @param data observed ('exact') data.
-#' @param misfit_fn function to compute misfit between `data` and result of
-#' simulation.
-#' @param ... additional args passed to [run()] or [memoise::memoise()],
+#' @param ... additional args passed to [objective()] or [memoise::memoise()],
 #' note that some solvers can require some parameters, e.g. `shell_solver`
 #' requires `precision`.
 #'
@@ -38,8 +36,8 @@
 #' silent = TRUE)
 #' solver_funs$value(x)
 #' solver_funs$gradient(x)
-objective_functions <- function(solver, data, misfit_fn = lsq_misfit, ...) {
-  obj <- objective(solver, data, misfit_fn = misfit_fn, ...)
+objective_functions <- function(solver, data, ...) {
+  obj <- objective(solver, data, ...)
   mem_obj <- do_memoise(obj, ...)
   make_functions(mem_obj, provides_gradient = differentiable(obj))
 }
@@ -71,7 +69,7 @@ objective_functions <- function(solver, data, misfit_fn = lsq_misfit, ...) {
 #' x <- c(10.5, 9.44, 10.21, 8.14)
 #' solver_obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
 #' solver_obj(x)
-objective <- function(solver, data, misfit_fn = lsq_misfit, ...) {
+objective <- function(solver, data, misfit_fn = squared_error, ...) {
   f <- function(x) {
     computed <- run(solver, x, ...)
     if (any(is.na(computed$qoi))) {
@@ -139,10 +137,10 @@ differentiable <- function(f) {
   attr(f, "differentiable")
 }
 
-#' Least square misfit
+#' Squared error
 #'
-#' Least square (quadratic, i.e. Euclidean-distance) misfit (aka loss function)
-#' between `x` and `data` as function of `x`. Additional argument `jacobian`
+#' Squared error (aka loss function) of `x` with respect to `data`,
+#' as function of `x`. Additional argument `jacobian`
 #' is the Jacobian matrix of the (vector)
 #' quantity of interest with respect to problem parameters. Such matrices are
 #' computed by, e.g., solvers based on adjoint state method.
@@ -164,7 +162,7 @@ differentiable <- function(f) {
 #'
 #' @export
 #'
-lsq_misfit <- function(x, data, jacobian = NULL) {
+squared_error <- function(x, data, jacobian = NULL) {
   stopifnot(is.numeric(x) | is.complex(x))
   stopifnot(is.numeric(data) | is.complex(data))
   stopifnot(length(x) == length(data))

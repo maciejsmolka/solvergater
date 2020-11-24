@@ -4,17 +4,14 @@
 \alias{objective_functions}
 \title{Solver objective functions}
 \usage{
-objective_functions(solver, data, misfit_fn = lsq_misfit, ...)
+objective_functions(solver, data, ...)
 }
 \arguments{
 \item{solver}{object of class \code{solver}.}
 
 \item{data}{observed ('exact') data.}
 
-\item{misfit_fn}{function to compute misfit between \code{data} and result of
-simulation.}
-
-\item{...}{additional args passed to \code{\link[=run]{run()}} or \code{\link[memoise:memoise]{memoise::memoise()}},
+\item{...}{additional args passed to \code{\link[=objective]{objective()}} or \code{\link[memoise:memoise]{memoise::memoise()}},
 note that some solvers can require some parameters, e.g. \code{shell_solver}
 requires \code{precision}.}
 }
