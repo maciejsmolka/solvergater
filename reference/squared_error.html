@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get solver output file name — output_file • solvergater</title>
+<title>Squared error — squared_error • solvergater</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,12 @@
 
 
 
-<meta property="og:title" content="Get solver output file name — output_file" />
-<meta property="og:description" content="This accessor function should be used instead of touching the components
-of shell_solver object. It takes into account the working directory." />
+<meta property="og:title" content="Squared error — squared_error" />
+<meta property="og:description" content="Squared error (aka loss function) of x with respect to data,
+as function of x. Additional argument jacobian
+is the Jacobian matrix of the (vector)
+quantity of interest with respect to problem parameters. Such matrices are
+computed by, e.g., solvers based on adjoint state method." />
 
 
 
@@ -109,30 +112,50 @@ of shell_solver object. It takes into account the working directory." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get solver output file name</h1>
-    <small class="dont-index">Source: <a href='https://github.com/maciejsmolka/solvergater/blob/master/R/output_file.R'><code>R/output_file.R</code></a></small>
-    <div class="hidden name"><code>output_file.Rd</code></div>
+    <h1>Squared error</h1>
+    <small class="dont-index">Source: <a href='https://github.com/maciejsmolka/solvergater/blob/master/R/objective.R'><code>R/objective.R</code></a></small>
+    <div class="hidden name"><code>squared_error.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This accessor function should be used instead of touching the components
-of <code>shell_solver</code> object. It takes into account the working directory.</p>
+    <p>Squared error (aka loss function) of <code>x</code> with respect to <code>data</code>,
+as function of <code>x</code>. Additional argument <code>jacobian</code>
+is the Jacobian matrix of the (vector)
+quantity of interest with respect to problem parameters. Such matrices are
+computed by, e.g., solvers based on adjoint state method.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>output_file</span><span class='op'>(</span><span class='va'>solver</span>, type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"qoi"</span>, <span class='st'>"jacobian"</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>squared_error</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>data</span>, jacobian <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>solver</th>
-      <td><p>object of class <code>shell_solver</code></p></td>
+      <th>x</th>
+      <td><p>numeric or complex vector, computed (simulated) data.</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>character, file type</p></td>
+      <th>data</th>
+      <td><p>numeric or complex vector, observed data, must have the same
+length as <code>x</code> (this is the number of quantities of interest).</p></td>
+    </tr>
+    <tr>
+      <th>jacobian</th>
+      <td><p>numeric or complex matrix, can be <code>NULL</code>, its number of rows
+must equal the length
+of <code>x</code> and <code>data</code>, its number of columns is the number of parameters in
+considered problem.</p></td>
     </tr>
     </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>List with one or two components:</p><dl>
+<dt><code>value</code></dt><dd><p>numeric scalar</p></dd>;
+<dt><code>gradient</code></dt><dd><p>numeric vector with length equal to <code><a href='https://rdrr.io/r/base/nrow.html'>ncol(jacobian)</a></code>, missing
+if <code>jacobian</code> is <code>NULL</code>.</p></dd>
+
+</dl>
 
 
   </div>

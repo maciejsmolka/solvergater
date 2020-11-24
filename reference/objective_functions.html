@@ -80,7 +80,7 @@ make_functions())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">solvergater</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -133,7 +133,7 @@ use <code><a href='make_functions.html'>make_functions()</a></code> composed wit
 <code><a href='make_functions.html'>make_functions()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>objective_functions</span><span class='op'>(</span><span class='va'>solver</span>, <span class='va'>data</span>, misfit_fn <span class='op'>=</span> <span class='va'>lsq_misfit</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>objective_functions</span><span class='op'>(</span><span class='va'>solver</span>, <span class='va'>data</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,13 +147,8 @@ use <code><a href='make_functions.html'>make_functions()</a></code> composed wit
       <td><p>observed ('exact') data.</p></td>
     </tr>
     <tr>
-      <th>misfit_fn</th>
-      <td><p>function to compute misfit between <code>data</code> and result of
-simulation.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>additional args passed to <code><a href='run.html'>run()</a></code> or <code><a href='https://rdrr.io/pkg/memoise/man/memoise.html'>memoise::memoise()</a></code>,
+      <td><p>additional args passed to <code><a href='objective.html'>objective()</a></code> or <code><a href='https://rdrr.io/pkg/memoise/man/memoise.html'>memoise::memoise()</a></code>,
 note that some solvers can require some parameters, e.g. <code>shell_solver</code>
 requires <code>precision</code>.</p></td>
     </tr>
