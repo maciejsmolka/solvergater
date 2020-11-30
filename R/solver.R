@@ -35,6 +35,12 @@ nparams <- function(solver) {
   solver
 }
 
+#' @rdname solver_attributes
+#' @export
+required_args <- function(solver) {
+  union("x", attr(solver, "required_args_nox"))
+}
+
 #' Get the count of solver runs
 #'
 #' @param solver object of class `solver`
@@ -45,8 +51,9 @@ run_count <- function(solver) {
 
 # solver class constructor
 # solver is an abstract class
-new_solver <- function(x = list(), nparams = NULL, provides_jacobian = FALSE, ...,
-                       class = character()) {
+# required_args need not include "x" ("x" is always required)
+new_solver <- function(x = list(), nparams = NULL, provides_jacobian = FALSE,
+                       required_args = NULL, ..., class = character()) {
   stopifnot(is.list(x))
   stopifnot(is.numeric(nparams) | is.null(nparams))
   rcount <- 0
@@ -61,6 +68,7 @@ new_solver <- function(x = list(), nparams = NULL, provides_jacobian = FALSE, ..
     x,
     nparams = nparams,
     provides_jacobian = provides_jacobian,
+    required_args_nox = setdiff(required_args, "x"),
     ...,
     class = c(class, "solver")
   )

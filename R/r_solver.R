@@ -5,12 +5,13 @@
 #' functions. Provided mainly for testing purposes.
 #'
 #' @param qoi function to act as the quantity of interest
-#' (should return scalar)
+#' (should return scalar).
 #' @param jacobian function to act as the Jacobian matrix for the quantity of
 #' interest (should return vector
 #' of the same lentgh as its parameter and should be the real Jacobian function
-#' for `qoi`)
-#' @param nparams numeric, number of parameters, unspecified if `NULL`
+#' for `qoi`).
+#' @param nparams numeric, number of parameters, unspecified if `NULL`.
+#' @param required_args character, mandatory args for [run()].
 #'
 #' @return An object of classes `r_solver` and `solver`
 #'
@@ -22,20 +23,22 @@
 r_solver <- function(
   qoi = function(x) 0,
   jacobian = function(x) rep(0, length(x)),
-  nparams = NULL
+  nparams = NULL,
+  required_args = NULL
   ) {
   validate_r_solver(
     new_r_solver(
       list(qoi = qoi, jacobian = jacobian),
       nparams = nparams,
-      provides_jacobian = is.function(jacobian)
+      provides_jacobian = is.function(jacobian),
+      required_args = required_args
     )
   )
 }
 
-new_r_solver <- function(x, nparams, provides_jacobian) {
+new_r_solver <- function(x, nparams, provides_jacobian, required_args) {
   new_solver(x, nparams = nparams, provides_jacobian = provides_jacobian,
-             class = "r_solver")
+             required_args = required_args, class = "r_solver")
 }
 
 validate_r_solver <- function(x) {

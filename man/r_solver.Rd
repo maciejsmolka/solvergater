@@ -7,19 +7,22 @@
 r_solver(
   qoi = function(x) 0,
   jacobian = function(x) rep(0, length(x)),
-  nparams = NULL
+  nparams = NULL,
+  required_args = NULL
 )
 }
 \arguments{
 \item{qoi}{function to act as the quantity of interest
-(should return scalar)}
+(should return scalar).}
 
 \item{jacobian}{function to act as the Jacobian matrix for the quantity of
 interest (should return vector
 of the same lentgh as its parameter and should be the real Jacobian function
-for \code{qoi})}
+for \code{qoi}).}
 
-\item{nparams}{numeric, number of parameters, unspecified if \code{NULL}}
+\item{nparams}{numeric, number of parameters, unspecified if \code{NULL}.}
+
+\item{required_args}{character, mandatory args for \code{\link[=run]{run()}}.}
 }
 \value{
 An object of classes \code{r_solver} and \code{solver}

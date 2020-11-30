@@ -28,7 +28,7 @@
 #' @export
 #'
 #' @examples
-#' s <- fake_simple_solver(4, 5)
+#' s <- fake_adaptive_solver(4, 5)
 #' result <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)
 #' observed_data <- result$qoi
 #' x <- c(10.5, 9.44, 10.21, 8.14)
@@ -65,7 +65,7 @@ objective_functions <- function(solver, data, ...) {
 #' @export
 #'
 #' @examples
-#' s <- fake_simple_solver(4, 5)
+#' s <- fake_adaptive_solver(4, 5)
 #' result <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)
 #' observed_data <- result$qoi
 #' x <- c(10.5, 9.44, 10.21, 8.14)
@@ -108,7 +108,7 @@ objective <- function(solver, data, misfit_fn = squared_error, ...) {
 #' @export
 #'
 #' @examples
-#' s <- fake_simple_solver(4, 5)
+#' s <- fake_adaptive_solver(4, 5)
 #' result <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)
 #' observed_data <- result$qoi
 #' x <- c(10.5, 9.44, 10.21, 8.14)

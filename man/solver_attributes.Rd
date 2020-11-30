@@ -5,6 +5,7 @@
 \alias{provides_jacobian}
 \alias{nparams}
 \alias{nparams<-}
+\alias{required_args}
 \title{Solver attribute accessors}
 \usage{
 provides_jacobian(solver)
@@ -12,6 +13,8 @@ provides_jacobian(solver)
 nparams(solver)
 
 nparams(solver) <- value
+
+required_args(solver)
 }
 \arguments{
 \item{solver}{object of class \code{solver}}

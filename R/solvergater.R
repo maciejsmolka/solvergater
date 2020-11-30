@@ -9,7 +9,7 @@
 #' * [fake_simple_solver()]
 #' * [run()]
 #' * [nparams()]
-#' * ['nparams<-'()]
+#' * [nparams<-()]
 #' * [provides_jacobian()]
 #' * [run_count()]
 #'

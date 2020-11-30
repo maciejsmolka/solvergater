@@ -31,7 +31,7 @@ Function factory producing solver objective function returning value and
 (possibly) gradient at the same time.
 }
 \examples{
-s <- fake_simple_solver(4, 5)
+s <- fake_adaptive_solver(4, 5)
 result <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)
 observed_data <- result$qoi
 x <- c(10.5, 9.44, 10.21, 8.14)

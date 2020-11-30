@@ -3,9 +3,11 @@
 #' Runs the solver executable and extracts the quantity of interest (QOI)
 #' and its Jacobian matrix (if available).
 #'
-#' @param solver solver object
-#' @param x numeric vector representing the point to compute objective at
-#' @param ... additional arguments passed to other functions
+#' @param solver solver object.
+#' @param x numeric, the point (parameter set) at which QOI is evaluated.
+#' @param ... additional arguments passed to other functions, note that
+#'   particular solvers can have some [required_args()] and they must be
+#'   provided.
 #'
 #' @return List with components:
 #' \describe{
@@ -29,12 +31,15 @@ run.default <- function(solver = NULL, x = NULL, ...) {
   list(qoi = NA, jacobian = NA)
 }
 
-#' @describeIn run Checks if number of solver parameters (when not
-#' `NULL` equals length of given point) and delegates to default method.
+#' @describeIn run Checks if number of solver parameters (unless
+#' `NULL`) equals length of given point and delegates to default method.
 #'
 #' @export
 run.solver <- function(solver, x, ...) {
   npars <- nparams(solver)
+  assert_point_not_null(x)
+  other_args <- attr(solver, "required_args_nox")
+  assert_all_args_not_null(other_args, list(...))
   if (!is.null(npars) && length(x) != npars) {
     stop("Dimension of 'x' must equal number of parameters in 'solver'",
          call. = FALSE)
@@ -47,7 +52,6 @@ run.solver <- function(solver, x, ...) {
 #'
 #' @export
 run.r_solver <- function(solver, x, ...) {
-  assert_point_not_null(x)
   NextMethod("run")
   jac <- if (provides_jacobian(solver)) solver$jacobian(x) else NA
   list(qoi = solver$qoi(x), jacobian = jac)
@@ -57,8 +61,6 @@ run.r_solver <- function(solver, x, ...) {
 #' file(s). If solver process exits with non-zero status code, a warning is
 #' issued and list of `NA`'s is returned.
 #'
-#' @param precision positive numeric scalar, expected solver accuracy
-#' (if applicable)
 #' @param ignore.stdout logical, if not `NULL` overrides default setting in
 #' `shell_solver` object
 #' @param ignore.stderr logical, if not `NULL` overrides default setting in
@@ -67,16 +69,14 @@ run.r_solver <- function(solver, x, ...) {
 #' forces `ignore.stdout = TRUE` and `ignore.stderr = TRUE`
 #'
 #' @export
-run.shell_solver <- function(solver, x, precision, ignore.stdout = NULL,
+run.shell_solver <- function(solver, x, ignore.stdout = NULL,
                              ignore.stderr = NULL, silent = FALSE, ...) {
-  assert_point_not_null(x)
-  assert_precision_not_null(precision)
   if (silent) {
     ignore.stdout <- TRUE
     ignore.stderr <- TRUE
   }
   NextMethod("run")
-  cmd <- paste(solver$cmd, solver$combine_args(x, precision))
+  cmd <- paste(solver$cmd, solver$combine_args(x, ...))
   s_message("Solver command: ", cmd, silent = silent)
   do_ignore_stdout <- solver$ignore.stdout
   if (!is.null(ignore.stdout)) {

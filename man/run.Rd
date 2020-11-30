@@ -13,25 +13,16 @@ run(solver, x, ...)
 
 \method{run}{r_solver}(solver, x, ...)
 
-\method{run}{shell_solver}(
-  solver,
-  x,
-  precision,
-  ignore.stdout = NULL,
-  ignore.stderr = NULL,
-  silent = FALSE,
-  ...
-)
+\method{run}{shell_solver}(solver, x, ignore.stdout = NULL, ignore.stderr = NULL, silent = FALSE, ...)
 }
 \arguments{
-\item{solver}{solver object}
+\item{solver}{solver object.}
 
-\item{x}{numeric vector representing the point to compute objective at}
+\item{x}{numeric, the point (parameter set) at which QOI is evaluated.}
 
-\item{...}{additional arguments passed to other functions}
-
-\item{precision}{positive numeric scalar, expected solver accuracy
-(if applicable)}
+\item{...}{additional arguments passed to other functions, note that
+particular solvers can have some \code{\link[=required_args]{required_args()}} and they must be
+provided.}
 
 \item{ignore.stdout}{logical, if not \code{NULL} overrides default setting in
 \code{shell_solver} object}
@@ -57,8 +48,8 @@ and its Jacobian matrix (if available).
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{solver}: Checks if number of solver parameters (when not
-\code{NULL} equals length of given point) and delegates to default method.
+\item \code{solver}: Checks if number of solver parameters (unless
+\code{NULL}) equals length of given point and delegates to default method.
 
 \item \code{r_solver}: Computes output using provided functions.
 

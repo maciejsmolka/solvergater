@@ -6,16 +6,17 @@
 # * first arg is the number of problem parameters (N)
 # * second is the number of quantities of interest (K)
 # * following N args are parameter values
+# * last arg is the precision
 # * additional args are silently ignored
 #
 # Solver in general computes the value and the Jacobian matrix of quantities
 # of interest, where
 # k-th quantity of interest is sum(x^k) where x is the vector of parameter values.
 # The exception is
-# point (1000, 1000, ..., 1000) (in any dimension) where solver exits with
-# error code -1.
+# the ball around point (1000, 1000, ..., 1000) (in any dimension) with radius
+# equal to the given precision. In this area the solver exits with error code -1.
 
-fake_simple <- function(qoi_file = "output_qoi",
+fake_adaptive <- function(qoi_file = "output_qoi",
                         jacobian_file = "output_jacobian",
                         cmd_args = commandArgs(TRUE)) {
   tryCatch({
@@ -25,7 +26,8 @@ fake_simple <- function(qoi_file = "output_qoi",
     cat("Number of parameters:", input$nparams, "\n")
     cat("Number of quantities of interest (QOI):", input$nqoi, "\n")
     cat("Point:", input$point, "\n")
-    y <- calculate_objective(input$point, input$nparams, input$nqoi)
+    cat("Precision:", input$precision, "\n")
+    y <- calculate_objective(input$point, input$precision, input$nparams, input$nqoi)
     cat("QOI value(s):", y$qoi, "\n")
     cat("QOI Jacobian:\n")
     print(y$jacobian)
@@ -51,16 +53,32 @@ process_args <- function(cmd_args) {
     stop("Number of QOIs must be numeric and not less than 1", call. = FALSE)
   }
   point <- numeric_args[3:(2 + nparams)]
+  precision <- numeric_args[3 + nparams]
   if (any(is.na(point))) {
     stop("Point length must equal number of parameters", call. = FALSE)
   }
-  list(nparams = nparams, nqoi = nqoi, point = point)
+  if (is.na(precision)) {
+    stop("Solver precision not given", call. = FALSE)
+  }
+  if (precision < 0) {
+    stop("Precision must be positive", call. = FALSE)
+  }
+  list(nparams = nparams, nqoi = nqoi, point = point, precision = precision)
 }
 
-calculate_objective <- function(x, nparams, nqoi) {
+PRECISION_CONSTANT <- 10
+
+calculate_objective <- function(x, precision, nparams, nqoi) {
   stopifnot(is.numeric(x))
   stopifnot(length(x) == nparams)
-  if (is_faulty(x)) {
+  for (i in seq_len(PRECISION_CONSTANT / precision)) {
+    cat(".")
+    Sys.sleep(1)
+  }
+  if (!is.null(i)) {
+    cat("\n")
+  }
+  if (is_faulty(x, precision)) {
     stop("Solver error", call. = FALSE)
   }
   qoi <- vapply(1:nqoi, power_fn(x), FUN.VALUE = double(1))
@@ -70,9 +88,9 @@ calculate_objective <- function(x, nparams, nqoi) {
 
 FAULTY_COORD <- 1000
 
-is_faulty <- function(x) {
+is_faulty <- function(x, precision) {
   x0 <- rep_len(FAULTY_COORD, length(x))
-  is.logical(all.equal(x, x0))
+  all((x - x0)^2 <= precision^2)
 }
 
 # Function factories producing vector power functions with gradient
@@ -97,4 +115,4 @@ write_matrix <- function(mat, file) {
   write(t(mat), file = file, ncolumns = ncol(mat))
 }
 
-fake_simple()
+fake_adaptive()

@@ -20,6 +20,7 @@
 #' exec has to be run, when `NULL` current working directory will be used
 #' @param ignore.stdout logical, should solver STDOUT be ignored?
 #' @param ignore.stderr logical, should solver STDERR be ignored?
+#' @param required_args character, mandatory args for [run()].
 #'
 #' @return An object of classes `shell_solver` and `solver`
 #'
@@ -34,7 +35,7 @@
 #' solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
 #' s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
 #' jacobian_file = "output_jacobian", wd = tempdir())
-#' run(s, c(20, 5), 10)
+#' run(s, c(20, 5))
 shell_solver <- function(
   cmd,
   nparams,
@@ -42,11 +43,11 @@ shell_solver <- function(
   jacobian_file = NULL,
   qoi_read_fn = function(file) scan(file, quiet = TRUE),
   jacobian_read_fn = if (!is.null(jacobian_file)) read_matrix(nparams),
-  arg_combine_fn =
-    function(x, precision) paste(c(x, precision), collapse = " "),
+  arg_combine_fn = function(x, ...) paste(x, collapse = " "),
   wd = NULL,
   ignore.stdout = TRUE,
-  ignore.stderr = TRUE
+  ignore.stderr = TRUE,
+  required_args = NULL
   ) {
   validate_shell_solver(
     new_shell_solver(
@@ -62,14 +63,49 @@ shell_solver <- function(
         ignore.stderr = ignore.stderr
         ),
       nparams = nparams,
-      provides_jacobian = !is.null(jacobian_file)
+      provides_jacobian = !is.null(jacobian_file),
+      required_args = required_args
     )
   )
 }
 
-new_shell_solver <- function(x, nparams, provides_jacobian) {
+#' shell_solver with precision
+#'
+#' A shell_solver that can compute the qoi with expected precision. `precision`
+#' becomes mandatory argument of [run()] method.
+#'
+#' @inheritParams shell_solver
+#' @param ... other args passed to [shell_solver()].
+#' @export
+#'
+#' @examples
+#' rscript_path <- file.path(R.home(), "bin", "Rscript")
+#' solver_path <-
+#'   file.path(find.package("solvergater"), "exec", "fake_adaptive.R")
+#' nparams <- 2
+#' nqoi <- 5
+#' solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
+#' s <- adaptive_shell_solver(solver_cmd, nparams = nparams,
+#' qoi_file = "output_qoi", jacobian_file = "output_jacobian", wd = tempdir())
+#' run(s, c(20, 5), precision = 90)
+adaptive_shell_solver <- function(
+  cmd,
+  nparams,
+  qoi_file,
+  required_args = "precision",
+  arg_combine_fn =
+    function(x, precision, ...) paste(c(x, precision), collapse = " "),
+  ...
+) {
+  req_args <- union(required_args, "precision")
+  shell_solver(cmd = cmd, nparams = nparams, qoi_file = qoi_file,
+               required_args = req_args, arg_combine_fn = arg_combine_fn,
+               ...)
+}
+
+new_shell_solver <- function(x, nparams, provides_jacobian, required_args) {
   new_solver(x, nparams = nparams, provides_jacobian = provides_jacobian,
-             class = "shell_solver")
+             required_args = required_args, class = "shell_solver")
 }
 
 validate_shell_solver <- function(x) {

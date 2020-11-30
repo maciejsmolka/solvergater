@@ -11,10 +11,11 @@ shell_solver(
   jacobian_file = NULL,
   qoi_read_fn = function(file) scan(file, quiet = TRUE),
   jacobian_read_fn = if (!is.null(jacobian_file)) read_matrix(nparams),
-  arg_combine_fn = function(x, precision) paste(c(x, precision), collapse = " "),
+  arg_combine_fn = function(x, ...) paste(x, collapse = " "),
   wd = NULL,
   ignore.stdout = TRUE,
-  ignore.stderr = TRUE
+  ignore.stderr = TRUE,
+  required_args = NULL
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ exec has to be run, when \code{NULL} current working directory will be used}
 \item{ignore.stdout}{logical, should solver STDOUT be ignored?}
 
 \item{ignore.stderr}{logical, should solver STDERR be ignored?}
+
+\item{required_args}{character, mandatory args for \code{\link[=run]{run()}}.}
 }
 \value{
 An object of classes \code{shell_solver} and \code{solver}
@@ -61,5 +64,5 @@ nqoi <- 5
 solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
 s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
 jacobian_file = "output_jacobian", wd = tempdir())
-run(s, c(20, 5), 10)
+run(s, c(20, 5))
 }

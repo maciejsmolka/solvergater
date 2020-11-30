@@ -16,7 +16,7 @@ solver handlers, objective providers and helpers.
 \item \code{\link[=fake_simple_solver]{fake_simple_solver()}}
 \item \code{\link[=run]{run()}}
 \item \code{\link[=nparams]{nparams()}}
-\item \code{\link[='nparams<-']{'nparams<-'()}}
+\item \code{\link[=nparams<-]{nparams<-()}}
 \item \code{\link[=provides_jacobian]{provides_jacobian()}}
 \item \code{\link[=run_count]{run_count()}}
 }
