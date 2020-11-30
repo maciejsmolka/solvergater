@@ -73,7 +73,7 @@ and its Jacobian matrix (if available)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">solvergater</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -128,35 +128,24 @@ and its Jacobian matrix (if available).</p>
 <span class='fu'>run</span><span class='op'>(</span><span class='va'>solver</span>, <span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for shell_solver</span>
-<span class='fu'>run</span><span class='op'>(</span>
-  <span class='va'>solver</span>,
-  <span class='va'>x</span>,
-  <span class='va'>precision</span>,
-  ignore.stdout <span class='op'>=</span> <span class='cn'>NULL</span>,
-  ignore.stderr <span class='op'>=</span> <span class='cn'>NULL</span>,
-  silent <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='fu'>run</span><span class='op'>(</span><span class='va'>solver</span>, <span class='va'>x</span>, ignore.stdout <span class='op'>=</span> <span class='cn'>NULL</span>, ignore.stderr <span class='op'>=</span> <span class='cn'>NULL</span>, silent <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>solver</th>
-      <td><p>solver object</p></td>
+      <td><p>solver object.</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>numeric vector representing the point to compute objective at</p></td>
+      <td><p>numeric, the point (parameter set) at which QOI is evaluated.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to other functions</p></td>
-    </tr>
-    <tr>
-      <th>precision</th>
-      <td><p>positive numeric scalar, expected solver accuracy
-(if applicable)</p></td>
+      <td><p>additional arguments passed to other functions, note that
+particular solvers can have some <code><a href='solver_attributes.html'>required_args()</a></code> and they must be
+provided.</p></td>
     </tr>
     <tr>
       <th>ignore.stdout</th>
@@ -189,8 +178,8 @@ info.</p></dd>
 
     
 <ul>
-<li><p><code>solver</code>: Checks if number of solver parameters (when not
-<code>NULL</code> equals length of given point) and delegates to default method.</p></li>
+<li><p><code>solver</code>: Checks if number of solver parameters (unless
+<code>NULL</code>) equals length of given point and delegates to default method.</p></li>
 <li><p><code>r_solver</code>: Computes output using provided functions.</p></li>
 <li><p><code>shell_solver</code>: Runs solver executable and reads values from output
 file(s). If solver process exits with non-zero status code, a warning is

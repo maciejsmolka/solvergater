@@ -80,7 +80,7 @@ make_functions())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">solvergater</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -168,7 +168,7 @@ Jacobian matrix.</p></dd>
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/memoise/man/memoise.html'>memoise::memoise()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fake_simple_solver.html'>fake_simple_solver</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>5</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fake_adaptive_solver.html'>fake_adaptive_solver</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>5</span><span class='op'>)</span>
 <span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'><a href='run.html'>run</a></span><span class='op'>(</span><span class='va'>s</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>10</span>, <span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>, precision <span class='op'>=</span> <span class='fl'>5.0</span>, silent <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>observed_data</span> <span class='op'>&lt;-</span> <span class='va'>result</span><span class='op'>$</span><span class='va'>qoi</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10.5</span>, <span class='fl'>9.44</span>, <span class='fl'>10.21</span>, <span class='fl'>8.14</span><span class='op'>)</span>

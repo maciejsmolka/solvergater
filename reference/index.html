@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">solvergater</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-solver-handlers" class="hasAnchor"><a href="#section-solver-handlers" class="anchor"></a>Solver handlers</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -133,22 +133,71 @@
       <tr>
         
         <td>
-          <p><code><a href="differentiable.html">differentiable()</a></code> </p>
+          <p><code><a href="adaptive_shell_solver.html">adaptive_shell_solver()</a></code> </p>
         </td>
-        <td><p>Is this function differentiable?</p></td>
+        <td><p>shell_solver with precision</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fake_adaptive_solver.html">fake_adaptive_solver()</a></code> </p>
+        </td>
+        <td><p>Gateway for <code>fake_adaptive.R</code> mock solver</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="fake_simple_solver.html">fake_simple_solver()</a></code> </p>
         </td>
-        <td><p>Gateway for <code>fake_simple.R</code> solver</p></td>
+        <td><p>Gateway for <code>fake_simple.R</code> mock solver</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="make_functions.html">make_functions()</a></code> </p>
+          <p><code><a href="r_solver.html">r_solver()</a></code> </p>
         </td>
-        <td><p>Make two functions out of objective</p></td>
+        <td><p>Gateway for solver written in R</p></td>
       </tr><tr>
+        
+        <td>
+          <p><code><a href="run.html">run()</a></code> </p>
+        </td>
+        <td><p>Run the solver</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shell_solver.html">shell_solver()</a></code> </p>
+        </td>
+        <td><p>Gateway to solver run from command line</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="solver_attributes.html">provides_jacobian()</a></code> <code><a href="solver_attributes.html">nparams()</a></code> <code><a href="solver_attributes.html">`nparams&lt;-`()</a></code> <code><a href="solver_attributes.html">required_args()</a></code> </p>
+        </td>
+        <td><p>Solver attribute accessors</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="solvergater.html">solvergater</a></code> </p>
+        </td>
+        <td><p>solvergater: External solver gateway in R</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="run_count.html">run_count()</a></code> </p>
+        </td>
+        <td><p>Get the count of solver runs</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-objective-providers" class="hasAnchor"><a href="#section-objective-providers" class="anchor"></a>Objective providers</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="objective.html">objective()</a></code> </p>
@@ -163,16 +212,35 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="output_file.html">output_file()</a></code> </p>
+          <p><code><a href="make_functions.html">make_functions()</a></code> </p>
         </td>
-        <td><p>Get solver output file name</p></td>
+        <td><p>Make two functions out of objective</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="r_solver.html">r_solver()</a></code> </p>
+          <p><code><a href="differentiable.html">differentiable()</a></code> </p>
         </td>
-        <td><p>Gateway for solver written in R</p></td>
+        <td><p>Is this function differentiable?</p></td>
       </tr><tr>
+        
+        <td>
+          <p><code><a href="squared_error.html">squared_error()</a></code> </p>
+        </td>
+        <td><p>Squared error</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-helpers" class="hasAnchor"><a href="#section-helpers" class="anchor"></a>Helpers</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="read_matrix.html">read_matrix()</a></code> </p>
@@ -181,39 +249,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="run.html">run()</a></code> </p>
-        </td>
-        <td><p>Run the solver</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="run_count.html">run_count()</a></code> </p>
-        </td>
-        <td><p>Get the count of solver runs</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="shell_solver.html">shell_solver()</a></code> </p>
-        </td>
-        <td><p>Gateway to solver run from command line</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="solver_attributes.html">provides_jacobian()</a></code> <code><a href="solver_attributes.html">nparams()</a></code> <code><a href="solver_attributes.html">`nparams&lt;-`()</a></code> </p>
-        </td>
-        <td><p>Solver attribute accessors</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="squared_error.html">squared_error()</a></code> </p>
-        </td>
-        <td><p>Squared error</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="write_matrix.html">write_matrix()</a></code> </p>
         </td>
         <td><p>Write a matrix to a file</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="output_file.html">output_file()</a></code> </p>
+        </td>
+        <td><p>Get solver output file name</p></td>
       </tr>
     </tbody>
     </table>

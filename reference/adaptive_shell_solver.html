@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gateway to solver run from command line — shell_solver • solvergater</title>
+<title>shell_solver with precision — adaptive_shell_solver • solvergater</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,9 @@
 
 
 
-<meta property="og:title" content="Gateway to solver run from command line — shell_solver" />
-<meta property="og:description" content="Gateway to simple external solver that is run from the command line
-and stores quantity of interest and its jacobian (with respect to problem
-parameters in output text files." />
+<meta property="og:title" content="shell_solver with precision — adaptive_shell_solver" />
+<meta property="og:description" content="A shell_solver that can compute the qoi with expected precision. precision
+becomes mandatory argument of run() method." />
 
 
 
@@ -110,29 +109,23 @@ parameters in output text files." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Gateway to solver run from command line</h1>
+    <h1>shell_solver with precision</h1>
     <small class="dont-index">Source: <a href='https://github.com/maciejsmolka/solvergater/blob/master/R/shell_solver.R'><code>R/shell_solver.R</code></a></small>
-    <div class="hidden name"><code>shell_solver.Rd</code></div>
+    <div class="hidden name"><code>adaptive_shell_solver.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Gateway to simple external solver that is run from the command line
-and stores quantity of interest and its jacobian (with respect to problem
-parameters in output text files.</p>
+    <p>A shell_solver that can compute the qoi with expected precision. <code>precision</code>
+becomes mandatory argument of <code><a href='run.html'>run()</a></code> method.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>shell_solver</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>adaptive_shell_solver</span><span class='op'>(</span>
   <span class='va'>cmd</span>,
   <span class='va'>nparams</span>,
   <span class='va'>qoi_file</span>,
-  jacobian_file <span class='op'>=</span> <span class='cn'>NULL</span>,
-  qoi_read_fn <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>file</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/scan.html'>scan</a></span><span class='op'>(</span><span class='va'>file</span>, quiet <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
-  jacobian_read_fn <span class='op'>=</span> <span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span><span class='op'>(</span><span class='va'>jacobian_file</span><span class='op'>)</span><span class='op'>)</span> <span class='fu'><a href='read_matrix.html'>read_matrix</a></span><span class='op'>(</span><span class='va'>nparams</span><span class='op'>)</span>,
-  arg_combine_fn <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>x</span>, collapse <span class='op'>=</span> <span class='st'>" "</span><span class='op'>)</span>,
-  wd <span class='op'>=</span> <span class='cn'>NULL</span>,
-  ignore.stdout <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  ignore.stderr <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  required_args <span class='op'>=</span> <span class='cn'>NULL</span>
+  required_args <span class='op'>=</span> <span class='st'>"precision"</span>,
+  arg_combine_fn <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span>, <span class='va'>...</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>precision</span><span class='op'>)</span>, collapse <span class='op'>=</span> <span class='st'>" "</span><span class='op'>)</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -152,19 +145,8 @@ parameters in output text files.</p>
 may be absolute or relative to <code>wd</code>, cannot be <code>NULL</code>.</p></td>
     </tr>
     <tr>
-      <th>jacobian_file</th>
-      <td><p>name of file containing the computed Jacobian matrix
-of quantity of interest,
-can be absolute or relative to <code>wd</code>, <code>NULL</code> indicates that the solver
-does not provide gradient info.</p></td>
-    </tr>
-    <tr>
-      <th>qoi_read_fn</th>
-      <td><p>function reading the quantity of interest from file.</p></td>
-    </tr>
-    <tr>
-      <th>jacobian_read_fn</th>
-      <td><p>function reading the Jacobian matrix from file.</p></td>
+      <th>required_args</th>
+      <td><p>character, mandatory args for <code><a href='run.html'>run()</a></code>.</p></td>
     </tr>
     <tr>
       <th>arg_combine_fn</th>
@@ -172,39 +154,23 @@ does not provide gradient info.</p></td>
 from point and precision for solver command line</p></td>
     </tr>
     <tr>
-      <th>wd</th>
-      <td><p>character, working directory, i.e. directory where actual solver
-exec has to be run, when <code>NULL</code> current working directory will be used</p></td>
-    </tr>
-    <tr>
-      <th>ignore.stdout</th>
-      <td><p>logical, should solver STDOUT be ignored?</p></td>
-    </tr>
-    <tr>
-      <th>ignore.stderr</th>
-      <td><p>logical, should solver STDERR be ignored?</p></td>
-    </tr>
-    <tr>
-      <th>required_args</th>
-      <td><p>character, mandatory args for <code><a href='run.html'>run()</a></code>.</p></td>
+      <th>...</th>
+      <td><p>other args passed to <code><a href='shell_solver.html'>shell_solver()</a></code>.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>An object of classes <code>shell_solver</code> and <code>solver</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>rscript_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Rhome.html'>R.home</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"bin"</span>, <span class='st'>"Rscript"</span><span class='op'>)</span>
 <span class='va'>solver_path</span> <span class='op'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/find.package.html'>find.package</a></span><span class='op'>(</span><span class='st'>"solvergater"</span><span class='op'>)</span>, <span class='st'>"exec"</span>, <span class='st'>"fake_simple.R"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/find.package.html'>find.package</a></span><span class='op'>(</span><span class='st'>"solvergater"</span><span class='op'>)</span>, <span class='st'>"exec"</span>, <span class='st'>"fake_adaptive.R"</span><span class='op'>)</span>
 <span class='va'>nparams</span> <span class='op'>&lt;-</span> <span class='fl'>2</span>
 <span class='va'>nqoi</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
 <span class='va'>solver_cmd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>rscript_path</span>, <span class='va'>solver_path</span>, <span class='va'>nparams</span>, <span class='va'>nqoi</span><span class='op'>)</span>
-<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>shell_solver</span><span class='op'>(</span><span class='va'>solver_cmd</span>, nparams <span class='op'>=</span> <span class='va'>nparams</span>, qoi_file <span class='op'>=</span> <span class='st'>"output_qoi"</span>,
-jacobian_file <span class='op'>=</span> <span class='st'>"output_jacobian"</span>, wd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='run.html'>run</a></span><span class='op'>(</span><span class='va'>s</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Users/runner/work/_temp/Library/solvergater/exec/fake_simple.R 2 5 20 5</span></div><div class='output co'>#&gt; <span class='message'>Entering /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpIykKRc</span></div><div class='output co'>#&gt; <span class='message'>Solver exited normally</span></div><div class='output co'>#&gt; $qoi
+<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>adaptive_shell_solver</span><span class='op'>(</span><span class='va'>solver_cmd</span>, nparams <span class='op'>=</span> <span class='va'>nparams</span>,
+qoi_file <span class='op'>=</span> <span class='st'>"output_qoi"</span>, jacobian_file <span class='op'>=</span> <span class='st'>"output_jacobian"</span>, wd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='run.html'>run</a></span><span class='op'>(</span><span class='va'>s</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='fl'>5</span><span class='op'>)</span>, precision <span class='op'>=</span> <span class='fl'>90</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Solver command: /Library/Frameworks/R.framework/Resources/bin/Rscript /Users/runner/work/_temp/Library/solvergater/exec/fake_adaptive.R 2 5 20 5 90</span></div><div class='output co'>#&gt; <span class='message'>Entering /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpIykKRc</span></div><div class='output co'>#&gt; <span class='message'>Solver exited normally</span></div><div class='output co'>#&gt; $qoi
 #&gt; [1]      25     425    8125  160625 3203125
 #&gt; 
 #&gt; $jacobian
