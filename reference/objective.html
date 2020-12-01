@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">solvergater</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -119,7 +119,7 @@
 (possibly) gradient at the same time.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>objective</span><span class='op'>(</span><span class='va'>solver</span>, <span class='va'>data</span>, misfit_fn <span class='op'>=</span> <span class='va'>squared_error</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>objective</span><span class='op'>(</span><span class='va'>solver</span>, <span class='va'>data</span>, misfit_fn <span class='op'>=</span> <span class='va'>squared_error</span>, param_transform <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,9 +138,17 @@
 simulation.</p></td>
     </tr>
     <tr>
+      <th>param_transform</th>
+      <td><p>function performing parameter transformation, must
+accept 1 parameter <code>x</code> and return list with components <code>value</code> and
+<code>jacobian</code>, the latter is optional if <code>solver</code> does not compute
+derivatives.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>additional args passed to <code><a href='run.html'>run()</a></code>, note that some solvers can
-require some parameters, e.g. <code>shell_solver</code> requires <code>precision</code>.</p></td>
+have some mandatory parameters (see <code><a href='solver_attributes.html'>required_args()</a></code>),
+e.g. solvers created with <code><a href='adaptive_shell_solver.html'>adaptive_shell_solver()</a></code> require <code>precision</code>.</p></td>
     </tr>
     </table>
 

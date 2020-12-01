@@ -80,7 +80,7 @@ make_functions())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">solvergater</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -149,8 +149,9 @@ use <code><a href='make_functions.html'>make_functions()</a></code> composed wit
     <tr>
       <th>...</th>
       <td><p>additional args passed to <code><a href='objective.html'>objective()</a></code> or <code><a href='https://rdrr.io/pkg/memoise/man/memoise.html'>memoise::memoise()</a></code>,
-note that some solvers can require some parameters, e.g. <code>shell_solver</code>
-requires <code>precision</code>.</p></td>
+note that some solvers can  have some mandatory parameters
+(see <code><a href='solver_attributes.html'>required_args()</a></code>),
+e.g. solvers created with <code><a href='adaptive_shell_solver.html'>adaptive_shell_solver()</a></code> require <code>precision</code>.</p></td>
     </tr>
     </table>
 
