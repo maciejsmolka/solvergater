@@ -62,7 +62,7 @@ nqoi <- 5
 solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
 s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
                   jacobian_file = "output_jacobian", wd = tempdir())
-run(s, c(20.11, 5, -1.2, 10.4), 10, silent = TRUE)
+run(s, c(20.11, 5, -1.2, 10.4), silent = TRUE)
 ```
 
 The basic use case for `solvergater` is the support of the optimization problems
@@ -72,7 +72,7 @@ type can be as follows.
 First, we prepare some 'observed data' by running the solver at a high accuracy level.
 
 ```{r prepareData}
-observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)$qoi
+observed_data <- run(s, c(10, 10, 10, 10), silent = TRUE)$qoi
 ```
 
 Then, as the objective we use the misfit between observed data and a current
@@ -81,7 +81,7 @@ an objective function returning value and gradient at the same time.
 
 ```{r objective}
 x <- c(10.5, 9.44, 10.21, 8.14)
-obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
+obj <- objective(s, observed_data, silent = TRUE)
 obj(x)
 ```
 
@@ -89,7 +89,7 @@ Second, we can obtain two separate functions for value and gradient. This form i
 intended for the use in [`stats::optim()`](https://rdrr.io/r/stats/optim.html).
 
 ```{r optimization}
-solver_obj <- objective_functions(s, observed_data, precision = 30.0, silent = TRUE)
+solver_obj <- objective_functions(s, observed_data, silent = TRUE)
 solver_obj$value(x)
 solver_obj$gradient(x)
 ```
@@ -99,7 +99,7 @@ actual solver, so in the above example only a single solver run is performed.
 
 ```{r optimizationMemoise}
 x1 <- c(0, 20, 0, 20)
-solver_obj <- objective_functions(s, observed_data, precision = 2.0, silent = TRUE)
+solver_obj <- objective_functions(s, observed_data, silent = TRUE)
 value_time <- system.time(solver_obj$value(x1))
 gradient_time <- system.time(solver_obj$gradient(x1))
 value_time

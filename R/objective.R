@@ -13,8 +13,9 @@
 #' @param solver object of class `solver`.
 #' @param data observed ('exact') data.
 #' @param ... additional args passed to [objective()] or [memoise::memoise()],
-#' note that some solvers can require some parameters, e.g. `shell_solver`
-#' requires `precision`.
+#' note that some solvers can  have some mandatory parameters
+#' (see [required_args()]),
+#' e.g. solvers created with [adaptive_shell_solver()] require `precision`.
 #'
 #' @return List with one or two components:
 #' \describe{
@@ -52,7 +53,8 @@ objective_functions <- function(solver, data, ...) {
 #' @param misfit_fn function to compute misfit between `data` and result of
 #' simulation.
 #' @param ... additional args passed to [run()], note that some solvers can
-#' require some parameters, e.g. `shell_solver` requires `precision`.
+#' have some mandatory parameters (see [required_args()]),
+#' e.g. solvers created with [adaptive_shell_solver()] require `precision`.
 #'
 #' @return Function with numeric parameter `x` returning list with one or two
 #' components:

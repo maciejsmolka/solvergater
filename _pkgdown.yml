@@ -4,6 +4,7 @@ reference:
   - matches("solver")
   - run
   - matches("nparams")
+  - required_args
   - provides_jacobian
   - run_count
 - title: Objective providers

@@ -59,7 +59,7 @@ nqoi <- 5
 solver_cmd <- paste(rscript_path, solver_path, nparams, nqoi)
 s <- shell_solver(solver_cmd, nparams = nparams, qoi_file = "output_qoi",
                   jacobian_file = "output_jacobian", wd = tempdir())
-run(s, c(20.11, 5, -1.2, 10.4), 10, silent = TRUE)
+run(s, c(20.11, 5, -1.2, 10.4), silent = TRUE)
 #> $qoi
 #> [1]      34.3100     539.0121    9380.8630  175874.8000 3413761.0000
 #> 
@@ -80,7 +80,7 @@ First, we prepare some ‘observed data’ by running the solver at a high
 accuracy level.
 
 ``` r
-observed_data <- run(s, c(10, 10, 10, 10), precision = 5.0, silent = TRUE)$qoi
+observed_data <- run(s, c(10, 10, 10, 10), silent = TRUE)$qoi
 ```
 
 Then, as the objective we use the misfit between observed data and a
@@ -90,7 +90,7 @@ at the same time.
 
 ``` r
 x <- c(10.5, 9.44, 10.21, 8.14)
-obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
+obj <- objective(s, observed_data, silent = TRUE)
 obj(x)
 #> $value
 #> [1] 2594156034
@@ -104,7 +104,7 @@ This form is intended for the use in
 [`stats::optim()`](https://rdrr.io/r/stats/optim.html).
 
 ``` r
-solver_obj <- objective_functions(s, observed_data, precision = 30.0, silent = TRUE)
+solver_obj <- objective_functions(s, observed_data, silent = TRUE)
 solver_obj$value(x)
 #> [1] 2594156034
 solver_obj$gradient(x)
@@ -117,13 +117,13 @@ run is performed.
 
 ``` r
 x1 <- c(0, 20, 0, 20)
-solver_obj <- objective_functions(s, observed_data, precision = 2.0, silent = TRUE)
+solver_obj <- objective_functions(s, observed_data, silent = TRUE)
 value_time <- system.time(solver_obj$value(x1))
 gradient_time <- system.time(solver_obj$gradient(x1))
 value_time
 #>    user  system elapsed 
-#>   0.309   0.083   5.409
+#>   0.263   0.091   0.396
 gradient_time
 #>    user  system elapsed 
-#>   0.001   0.001   0.001
+#>   0.001   0.000   0.001
 ```
