@@ -69,7 +69,7 @@ The basic use case for `solvergater` is the support of the optimization problems
 with special attention paid for inverse problems. A simulated problem of the latter
 type can be as follows.
 
-First, we prepare some 'observed data' by running the solver at a high accuracy level.
+First, we prepare some 'observed data' by running the solver at a given point.
 
 ```{r prepareData}
 observed_data <- run(s, c(10, 10, 10, 10), silent = TRUE)$qoi
