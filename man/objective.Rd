@@ -4,7 +4,7 @@
 \alias{objective}
 \title{Solver objective}
 \usage{
-objective(solver, data, misfit_fn = squared_error, ...)
+objective(solver, data, misfit_fn = squared_error, param_transform = NULL, ...)
 }
 \arguments{
 \item{solver}{object of class \code{solver}.}
@@ -14,8 +14,14 @@ objective(solver, data, misfit_fn = squared_error, ...)
 \item{misfit_fn}{function to compute misfit between \code{data} and result of
 simulation.}
 
+\item{param_transform}{function performing parameter transformation, must
+accept 1 parameter \code{x} and return list with components \code{value} and
+\code{jacobian}, the latter is optional if \code{solver} does not compute
+derivatives.}
+
 \item{...}{additional args passed to \code{\link[=run]{run()}}, note that some solvers can
-require some parameters, e.g. \code{shell_solver} requires \code{precision}.}
+have some mandatory parameters (see \code{\link[=required_args]{required_args()}}),
+e.g. solvers created with \code{\link[=adaptive_shell_solver]{adaptive_shell_solver()}} require \code{precision}.}
 }
 \value{
 Function with numeric parameter \code{x} returning list with one or two

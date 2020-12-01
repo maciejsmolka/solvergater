@@ -52,6 +52,10 @@ objective_functions <- function(solver, data, ...) {
 #' @param data observed ('exact') data.
 #' @param misfit_fn function to compute misfit between `data` and result of
 #' simulation.
+#' @param param_transform function performing parameter transformation, must
+#'   accept 1 parameter `x` and return list with components `value` and
+#'   `jacobian`, the latter is optional if `solver` does not compute
+#'   derivatives.
 #' @param ... additional args passed to [run()], note that some solvers can
 #' have some mandatory parameters (see [required_args()]),
 #' e.g. solvers created with [adaptive_shell_solver()] require `precision`.
@@ -73,8 +77,14 @@ objective_functions <- function(solver, data, ...) {
 #' x <- c(10.5, 9.44, 10.21, 8.14)
 #' solver_obj <- objective(s, observed_data, precision = 30.0, silent = TRUE)
 #' solver_obj(x)
-objective <- function(solver, data, misfit_fn = squared_error, ...) {
+objective <- function(solver, data, misfit_fn = squared_error,
+                      param_transform = NULL, ...) {
   f <- function(x) {
+    y <- NULL
+    if (!is.null(param_transform)) {
+      y <- param_transform(x)
+      x <- y$value
+    }
     computed <- run(solver, x, ...)
     if (any(is.na(computed$qoi))) {
       result <- list(value = NA)
@@ -85,6 +95,8 @@ objective <- function(solver, data, misfit_fn = squared_error, ...) {
       jac <- computed$jacobian
       if (any(is.na(jac))) {
         jac <- NULL
+      } else if (!is.null(y)) {
+        jac <- jac %*% y$jacobian
       }
       result <- misfit_fn(computed$qoi, data, jacobian = jac)
       if (provides_jacobian(solver) && is.null(result$gradient)) {

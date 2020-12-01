@@ -65,3 +65,33 @@ test_that("objective() handles solver errors appropriately", {
   expect_equal(result$value, NA)
   expect_equal(result$gradient, NA)
 })
+
+test_that("Parameter transformation works in 1D", {
+  solver <- r_solver(qoi = function(x) x, jacobian = function(x) 1,
+                     nparams = 1)
+  par_tr <- function(x) list(value = 2 * x, jacobian = 2)
+  misfit <- function(x, data, jacobian) {
+    list(value = x - data, gradient = jacobian)
+  }
+  obj <- objective(solver, 0, misfit_fn = misfit, param_transform = par_tr)
+  y <- obj(0.5)
+  expect_equal(y$value, 1)
+  expect_equal(y$gradient, matrix(2))
+})
+
+test_that("Parameter transformation works in 2D", {
+  solver <- r_solver(qoi = function(x) x,
+                     jacobian = function(x) diag(length(x)),
+                     nparams = 2
+                     )
+  s <- 2
+  par_tr <- function(x, scale = s) {
+    list(value = scale * x, jacobian = diag(scale, nrow = length(x)))
+  }
+  exact <- c(0, 0)
+  of <- objective(solver, exact, param_transform = par_tr)
+  x <- c(1, 0)
+  y <- of(x)
+  expect_equal(y$value, s^2 * sum(x^2))
+  expect_equal(y$gradient, 2 * s^2 * x)
+})

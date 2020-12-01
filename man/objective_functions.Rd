@@ -12,8 +12,9 @@ objective_functions(solver, data, ...)
 \item{data}{observed ('exact') data.}
 
 \item{...}{additional args passed to \code{\link[=objective]{objective()}} or \code{\link[memoise:memoise]{memoise::memoise()}},
-note that some solvers can require some parameters, e.g. \code{shell_solver}
-requires \code{precision}.}
+note that some solvers can  have some mandatory parameters
+(see \code{\link[=required_args]{required_args()}}),
+e.g. solvers created with \code{\link[=adaptive_shell_solver]{adaptive_shell_solver()}} require \code{precision}.}
 }
 \value{
 List with one or two components:
